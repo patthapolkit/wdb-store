@@ -11,7 +11,7 @@ export default {
           300: "#E5F96E",
           400: "#DFF547",
           700: "#C1CD00",
-          default: "#DEF81C",
+          base: "#DEF81C",
         },
         secondary: {
           50: "#FAFAFA",
@@ -19,7 +19,7 @@ export default {
           300: "#E1E1E1",
           500: "#9F9F9F",
           700: "#626262",
-          default: "#222222",
+          base: "#222222",
         },
         success: "#13CE66",
         info: "#3366FF",
