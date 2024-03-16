@@ -1,25 +1,31 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function ItemCard({ permalink, skuCode }) {
-  const [item, setItem] = useState({});
-  const [sku, setSku] = useState(skuCode);
-  const [qty, setQty] = useState(1);
+export default function ItemCard(props) {
+  const [product, setProduct] = useState({});
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedQty, setSelectedQty] = useState(0);
+
+  const { id, skuCode, quantity, productPermalink } = props.item;
+  const cartId = props.cartId;
+  const defaultVariant = product.variants?.find(
+    (variant) => variant.skuCode === skuCode
+  );
 
   useEffect(() => {
     try {
       const fetchData = async () => {
         const res = await axios.get(
-          `https://api.storefront.wdb.skooldio.dev/products/${permalink}`
+          `https://api.storefront.wdb.skooldio.dev/products/${productPermalink}`
         );
-        setItem(res.data);
-        console.log(res.data);
+        setProduct(res.data);
       };
       fetchData();
     } catch (error) {
       console.error(error);
     }
-  }, [permalink]);
+  }, [productPermalink]);
 
   const formatNumber = (number) => {
     return new Intl.NumberFormat("en-US", {
@@ -28,32 +34,35 @@ export default function ItemCard({ permalink, skuCode }) {
     }).format(number);
   };
 
-  const uniqueColors = [
-    ...new Set(item.variants?.map((variant) => variant.color)),
-  ];
-
   const deleteItem = async () => {
     try {
-      const res = await axios.delete(
-        `https://api.storefront.wdb.skooldio.dev/carts/${cartId}/items/${item.id}`
+      axios.delete(
+        `https://api.storefront.wdb.skooldio.dev/carts/${cartId}/items/${id}`
       );
-      console.log(res.data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const uniqueColors = [
+    ...new Set(product.variants?.map((variant) => variant.color)),
+  ];
+
   return (
     <div className="border-b-[1px] pb-6 mb-6 w-full flex flex-col lg:flex-row lg:gap-10">
       <img
-        src={item.imageUrls?.[0]}
-        alt={item.name}
+        src={product.imageUrls?.[0]}
+        alt={product.name}
         className="w-[209px] h-[209px] object-cover self-center mb-4"
       />
       <div className="lg:flex lg:flex-col lg:justify-between lg:w-full">
         <div className="flex justify-between gap-4 mb-5">
-          <p className="font-bold text-2xl">{item.name}</p>
-          <button onClick={deleteItem()}>
+          <p className="font-bold text-2xl">{product.name}</p>
+          <button
+            onClick={() => {
+              deleteItem();
+            }}
+          >
             <img
               src="/src/assets/delete.svg"
               alt="delete this item"
@@ -69,15 +78,20 @@ export default function ItemCard({ permalink, skuCode }) {
               </p>
               <div className="relative">
                 <select
-                  name="color"
                   id="color"
                   className="w-full h-[54px] border px-2.5 focus:outline-none appearance-none"
+                  value={defaultVariant?.color}
+                  onChange={(e) => setSelectedColor(e.target.value)}
                 >
-                  {uniqueColors.map((color) => (
-                    <option key={color} value={color}>
-                      {color}
-                    </option>
-                  ))}
+                  {uniqueColors.length > 0 ? (
+                    uniqueColors.map((color) => (
+                      <option key={id + color} value={color}>
+                        {color}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="-">-</option>
+                  )}
                 </select>
                 <div className="absolute top-2 right-2 pointer-events-none">
                   <img src="src/assets/chevron-down.svg" alt="" />
@@ -90,14 +104,15 @@ export default function ItemCard({ permalink, skuCode }) {
               </p>
               <div className="relative">
                 <select
-                  name="size"
                   id="size"
                   className="w-full h-[54px] border px-2.5 focus:outline-none appearance-none"
+                  value={defaultVariant?.size}
+                  onChange={(e) => setSelectedSize(e.target.value)}
                 >
-                  {item.variants
+                  {product.variants
                     ?.sort((a, b) => a.size.localeCompare(b.size))
                     .map((variant) => (
-                      <option key={variant.id} value={variant.id}>
+                      <option key={id + variant.size} value={variant.size}>
                         {variant.size}
                       </option>
                     ))}
@@ -113,13 +128,14 @@ export default function ItemCard({ permalink, skuCode }) {
               </p>
               <div className="relative">
                 <select
-                  name="qty"
                   id="qty"
                   className="w-full h-[54px] border px-2.5 focus:outline-none appearance-none"
+                  value={quantity}
+                  onChange={(e) => setSelectedQty(e.target.value)}
                 >
-                  {item.variants?.map((variant) => (
-                    <option key={variant.id} value={variant.id}>
-                      {variant.remains}
+                  {[...Array(defaultVariant?.remains).keys()].map((qty) => (
+                    <option key={id + qty} value={qty + 1}>
+                      {qty + 1}
                     </option>
                   ))}
                 </select>
@@ -130,7 +146,7 @@ export default function ItemCard({ permalink, skuCode }) {
             </div>
           </div>
           <div className="self-end text-2xl font-bold">
-            <p>{formatNumber(item.price)}</p>
+            <p>{formatNumber(product.price)}</p>
           </div>
         </div>
       </div>

@@ -4,8 +4,7 @@ import axios from "axios";
 
 export default function Checkout() {
   const [items, setItems] = useState([]);
-  // const cartId = "qehWhDUSuF4c94wOWJb2"; //empty cart
-  const cartId = "z3dyLHHye5rp3tYRWPWP"; //cart with 2 items
+  const cartId = localStorage.getItem("cartId");
 
   useEffect(() => {
     try {
@@ -29,7 +28,7 @@ export default function Checkout() {
           <p className="text-2xl font-bold self-start mb-6">Items</p>
           {items.length > 0 ? (
             items.map((item) => (
-              <ItemCard key={item.id} permalink={item.productPermalink} />
+              <ItemCard key={item.id} item={item} cartId={cartId} />
             ))
           ) : (
             <div className="flex flex-col items-center">
