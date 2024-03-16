@@ -14,17 +14,13 @@ export default function ItemCard(props) {
   );
 
   useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const res = await axios.get(
-          `https://api.storefront.wdb.skooldio.dev/products/${productPermalink}`
-        );
-        setProduct(res.data);
-      };
-      fetchData();
-    } catch (error) {
-      console.error(error);
-    }
+    const fetchData = async () => {
+      const res = await axios.get(
+        `https://api.storefront.wdb.skooldio.dev/products/${productPermalink}`
+      );
+      setProduct(res.data);
+    };
+    fetchData();
   }, [productPermalink]);
 
   const formatNumber = (number) => {
@@ -35,13 +31,9 @@ export default function ItemCard(props) {
   };
 
   const deleteItem = async () => {
-    try {
-      axios.delete(
-        `https://api.storefront.wdb.skooldio.dev/carts/${cartId}/items/${id}`
-      );
-    } catch (error) {
-      console.error(error);
-    }
+    axios.delete(
+      `https://api.storefront.wdb.skooldio.dev/carts/${cartId}/items/${id}`
+    );
   };
 
   const uniqueColors = [

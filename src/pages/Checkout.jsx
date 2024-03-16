@@ -7,17 +7,13 @@ export default function Checkout() {
   const cartId = localStorage.getItem("cartId");
 
   useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const res = await axios.get(
-          `https://api.storefront.wdb.skooldio.dev/carts/${cartId}`
-        );
-        setItems(res.data.items);
-      };
-      fetchData();
-    } catch (error) {
-      console.error(error);
-    }
+    const fetchData = async () => {
+      const res = await axios.get(
+        `https://api.storefront.wdb.skooldio.dev/carts/${cartId}`
+      );
+      setItems(res.data.items);
+    };
+    fetchData();
   });
 
   return (
