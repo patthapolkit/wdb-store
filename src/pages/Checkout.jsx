@@ -18,7 +18,7 @@ export default function Checkout() {
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  });
 
   return (
     <div className="mx-4 lg:mx-40">
