@@ -5,6 +5,7 @@ const LeftArrow = () => (
     viewBox="0 0 9 15"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className="lg:w-[15px] lg:h-[26px]"
   >
     <path
       fillRule="evenodd"
