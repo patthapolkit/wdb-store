@@ -14,9 +14,35 @@ export default function ProductDetails() {
   const [data, setData] = useState({});
   const [rating, setRating] = useState(0);
   const [colorData, setColorData] = useState([]);
+  const [sizeData, setSizeData] = useState([]);
+  const [currentImg, setCurrentImg] = useState("");
+  const [count, setCount] = useState(0);
+
+  const handlePreviewClick = (event) => {
+    const src = event.target.src;
+    setCurrentImg(src);
+  };
+
   const colorOfButton = (code) => {
     const res = `bg-[${code}] aspect-square w-[54px]`;
+    console.log(res);
     return res;
+  };
+
+  const getSizes = (variants) => {
+    const tempCollect = [];
+    const sizes = [];
+    variants.forEach((data) => {
+      if (!tempCollect.includes(data.size)) tempCollect.push(data.size);
+    });
+    tempCollect.forEach((size) => {
+      if (tempCollect.includes("XS") && !sizes.includes("XS")) sizes.push("XS");
+      if (tempCollect.includes("S") && !sizes.includes("S")) sizes.push("S");
+      if (tempCollect.includes("M") && !sizes.includes("M")) sizes.push("M");
+      if (tempCollect.includes("L") && !sizes.includes("L")) sizes.push("L");
+      if (tempCollect.includes("XL") && !sizes.includes("XL")) sizes.push("XL");
+    });
+    setSizeData(sizes);
   };
 
   const getColors = (variants) => {
@@ -34,7 +60,7 @@ export default function ProductDetails() {
     setColorData(uniqueVariants);
   };
 
-  const CalculateStar = (num) => {
+  const calculateStar = (num) => {
     if (num - Math.floor(num) > 0.4) {
       setRating(Math.ceil(num));
     } else {
@@ -48,18 +74,18 @@ export default function ProductDetails() {
       try {
         const { data: response } = await axios.get(baseurl + permalink);
         setData(response);
+        calculateStar(response?.ratings ?? 0);
+        getColors(response?.variants ?? []);
+        getSizes(response?.variants ?? []);
+        setCurrentImg(response.imageUrls[0]);
+        setLoading(false);
       } catch (error) {
         console.error(error.message);
       }
     };
-    const main = async () => {
-      await fetchData();
-      CalculateStar(data.ratings);
-      getColors(data.variants);
-    };
-    main();
-    setLoading(false);
+    fetchData();
   }, []);
+
   return (
     <div className="flex flex-col">
       {/* Navbar */}
@@ -77,7 +103,8 @@ export default function ProductDetails() {
                     {/* <SaleLabel /> */}
                     {/* <OutStockLabel /> */}
                     <img
-                      src={data.imageUrls[0]}
+                      src={currentImg}
+                      alt="Previewing Image"
                       className="w-full object-cover"
                     />
                     <div className="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2">
@@ -97,18 +124,16 @@ export default function ProductDetails() {
                   </div>
                 </div>
                 <div className="flex justify-between w-full gap-2">
-                  <a href="#item1" className="btn px-0 flex-1 h-auto">
-                    <img src={data.imageUrls[1]} />
-                  </a>
-                  <a href="#item2" className="btn px-0 flex-1 h-auto">
-                    <img src={data.imageUrls[2]} />
-                  </a>
-                  <a href="#item3" className="btn px-0 flex-1 h-auto">
-                    <img src={data.imageUrls[3]} />
-                  </a>
-                  <a href="#item4" className="btn px-0 flex-1 h-auto">
-                    <img src={data.imageUrls[4]} />
-                  </a>
+                  {data?.imageUrls?.map((img) => (
+                    <a
+                      key={img}
+                      href="#item1"
+                      className="btn px-0 flex-1 h-auto"
+                      onClick={handlePreviewClick}
+                    >
+                      <img src={img} alt={`Image ${img}`} />
+                    </a>
+                  ))}
                 </div>
               </div>
               <div className="mt-5 lg:mt-0">
@@ -167,7 +192,7 @@ export default function ProductDetails() {
                   <form className="flex flex-col gap-6">
                     <div className="flex flex-col gap-y-2">
                       <label
-                        for="button-selection"
+                        htmlFor="button-selection"
                         className="text-sm text-secondary-700"
                       >
                         Color
@@ -190,7 +215,7 @@ export default function ProductDetails() {
                     <div className="flex flex-col gap-y-2 h-20">
                       <div className="flex justify-between items-center">
                         <label
-                          for="button-selection"
+                          htmlFor="button-selection"
                           className="text-sm text-secondary-700"
                         >
                           Size
@@ -198,41 +223,20 @@ export default function ProductDetails() {
                         <a className="text-xs text-info">What's my size?</a>
                       </div>
                       <div className="flex gap-x-2 justify-between h-[54px]">
-                        <button
-                          type="button"
-                          className="aspect-square w-full border border-secondary-300"
-                        >
-                          XS
-                        </button>
-                        <button
-                          type="button"
-                          className="aspect-square w-full border border-secondary-300"
-                        >
-                          S
-                        </button>
-                        <button
-                          type="button"
-                          className="aspect-square w-full border border-secondary-300"
-                        >
-                          M
-                        </button>
-                        <button
-                          type="button"
-                          className="aspect-square w-full border border-secondary-300"
-                        >
-                          L
-                        </button>
-                        <button
-                          type="button"
-                          className="aspect-square w-full border border-secondary-300"
-                        >
-                          XL
-                        </button>
+                        {sizeData.map((size, index) => (
+                          <button
+                            kay={index}
+                            type="button"
+                            className="aspect-square w-full border border-secondary-300"
+                          >
+                            {size}
+                          </button>
+                        ))}
                       </div>
                     </div>
-                    <div class="flex flex-col gap-y-2 lg:w-[139px]">
+                    <div className="flex flex-col gap-y-2 lg:w-[139px]">
                       <label
-                        for="dropdown-selection"
+                        htmlFor="dropdown-selection"
                         className="text-sm text-secondary-700"
                       >
                         Qty.
@@ -251,7 +255,7 @@ export default function ProductDetails() {
                     </div>
                     <button
                       type="submit"
-                      class="btn rounded-none bg-secondary-base text-white font-normal text-base h-[54px] w-full"
+                      className="btn rounded-none bg-secondary-base text-white font-normal text-base h-[54px] w-full"
                     >
                       Add to cart
                     </button>
