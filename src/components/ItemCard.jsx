@@ -1,27 +1,34 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 export default function ItemCard(props) {
-  const [product, setProduct] = useState({});
-  const [selectedColor, setSelectedColor] = useState("");
-  const [selectedSize, setSelectedSize] = useState("");
-  const [selectedQty, setSelectedQty] = useState(0);
+  const { id, skuCode, quantity } = props.item;
+  const product = props.product;
+  const deleteItem = props.deleteItem;
+  const updateItem = props.updateItem;
 
-  const { id, skuCode, quantity, productPermalink } = props.item;
-  const cartId = props.cartId;
-  const defaultVariant = product.variants?.find(
+  const defaultVariant = product?.variants?.find(
     (variant) => variant.skuCode === skuCode
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get(
-        `https://api.storefront.wdb.skooldio.dev/products/${productPermalink}`
-      );
-      setProduct(res.data);
-    };
-    fetchData();
-  }, [productPermalink]);
+  const [selectedColor, setSelectedColor] = useState(defaultVariant?.color);
+  const [selectedSize, setSelectedSize] = useState(defaultVariant?.size);
+  const [selectedQty, setSelectedQty] = useState(quantity);
+
+  const uniqueColors = [
+    ...new Set(product?.variants?.map((variant) => variant.color)),
+  ];
+
+  const availableSizes = product?.variants
+    ?.filter((variant) => variant.color === selectedColor)
+    .map((variant) => variant.size)
+    .sort();
+
+  const avaliableQty = product?.variants?.find(
+    (variant) =>
+      variant.color === selectedColor && variant.size === selectedSize
+  )?.remains;
+
+  const isPromo = product?.promotionalPrice < product?.price;
 
   const formatNumber = (number) => {
     return new Intl.NumberFormat("en-US", {
@@ -30,29 +37,26 @@ export default function ItemCard(props) {
     }).format(number);
   };
 
-  const deleteItem = async () => {
-    axios.delete(
-      `https://api.storefront.wdb.skooldio.dev/carts/${cartId}/items/${id}`
+  const findSkuCode = (color, size) => {
+    const variant = product?.variants?.find(
+      (variant) => variant.color === color && variant.size === size
     );
+    return variant?.skuCode;
   };
-
-  const uniqueColors = [
-    ...new Set(product.variants?.map((variant) => variant.color)),
-  ];
 
   return (
     <div className="border-b-[1px] pb-6 mb-6 w-full flex flex-col lg:flex-row lg:gap-10">
       <img
-        src={product.imageUrls?.[0]}
-        alt={product.name}
+        src={product?.imageUrls?.[0]}
+        alt={product?.name}
         className="w-[209px] h-[209px] object-cover self-center mb-4"
       />
       <div className="lg:flex lg:flex-col lg:justify-between lg:w-full">
         <div className="flex justify-between gap-4 mb-5">
-          <p className="font-bold text-2xl">{product.name}</p>
+          <p className="font-bold text-2xl">{product?.name}</p>
           <button
             onClick={() => {
-              deleteItem();
+              deleteItem(id);
             }}
           >
             <img
@@ -65,15 +69,22 @@ export default function ItemCard(props) {
         <div className="flex justify-between flex-col lg:flex-row">
           <div className="grid grid-rows-2 grid-cols-2 gap-4 mb-4 lg:grid-rows-1 lg:grid-cols-3 lg:mb-0 w-full lg:mr-10">
             <div className="col-span-2 lg:col-span-1">
-              <p htmlFor="color" className="mb-2 text-secondary-700">
+              <p htmlFor={id + "color"} className="mb-2 text-secondary-700">
                 Color
               </p>
               <div className="relative">
                 <select
-                  id="color"
+                  id={id + "color"}
                   className="w-full h-[54px] border px-2.5 focus:outline-none appearance-none"
-                  value={defaultVariant?.color}
-                  onChange={(e) => setSelectedColor(e.target.value)}
+                  value={selectedColor}
+                  onChange={(e) => {
+                    setSelectedColor(e.target.value);
+                    updateItem(
+                      findSkuCode(e.target.value, selectedSize),
+                      Number(selectedQty),
+                      id
+                    );
+                  }}
                 >
                   {uniqueColors.length > 0 ? (
                     uniqueColors.map((color) => (
@@ -91,23 +102,34 @@ export default function ItemCard(props) {
               </div>
             </div>
             <div>
-              <p htmlFor="size" className="mb-2 text-secondary-700">
+              <p htmlFor={id + "size"} className="mb-2 text-secondary-700">
                 Size
               </p>
               <div className="relative">
                 <select
-                  id="size"
+                  id={id + "size"}
                   className="w-full h-[54px] border px-2.5 focus:outline-none appearance-none"
-                  value={defaultVariant?.size}
-                  onChange={(e) => setSelectedSize(e.target.value)}
+                  value={selectedSize}
+                  onChange={(e) => {
+                    setSelectedSize(e.target.value);
+                    updateItem(
+                      findSkuCode(selectedColor, e.target.value),
+                      Number(selectedQty),
+                      id
+                    );
+                  }}
                 >
-                  {product.variants
-                    ?.sort((a, b) => a.size.localeCompare(b.size))
-                    .map((variant) => (
-                      <option key={id + variant.size} value={variant.size}>
-                        {variant.size}
+                  {availableSizes?.map((size) =>
+                    size !== "" ? (
+                      <option key={id + size} value={size}>
+                        {size}
                       </option>
-                    ))}
+                    ) : (
+                      <option key={id + "-"} value="-">
+                        -
+                      </option>
+                    )
+                  )}
                 </select>
                 <div className="absolute top-2 right-2 pointer-events-none">
                   <img src="src/assets/chevron-down.svg" alt="" />
@@ -115,21 +137,31 @@ export default function ItemCard(props) {
               </div>
             </div>
             <div>
-              <p htmlFor="qty" className="mb-2 text-secondary-700">
+              <p htmlFor={id + "qty"} className="mb-2 text-secondary-700">
                 Qty.
               </p>
               <div className="relative">
                 <select
-                  id="qty"
+                  id={id + "qty"}
                   className="w-full h-[54px] border px-2.5 focus:outline-none appearance-none"
-                  value={quantity}
-                  onChange={(e) => setSelectedQty(e.target.value)}
+                  value={selectedQty}
+                  onChange={(e) => {
+                    if (avaliableQty === 0) return;
+                    setSelectedQty(e.target.value);
+                    updateItem(findSkuCode(), Number(e.target.value), id);
+                  }}
                 >
-                  {[...Array(defaultVariant?.remains).keys()].map((qty) => (
-                    <option key={id + qty} value={qty + 1}>
-                      {qty + 1}
+                  {avaliableQty > 0 ? (
+                    [...Array(avaliableQty).keys()].map((num) => (
+                      <option key={id + num} value={num + 1}>
+                        {num + 1}
+                      </option>
+                    ))
+                  ) : (
+                    <option key={id + 0} value={0}>
+                      -
                     </option>
-                  ))}
+                  )}
                 </select>
                 <div className="absolute top-2 right-2 pointer-events-none">
                   <img src="src/assets/chevron-down.svg" alt="" />
@@ -137,8 +169,27 @@ export default function ItemCard(props) {
               </div>
             </div>
           </div>
-          <div className="self-end text-2xl font-bold">
-            <p>{formatNumber(product.price)}</p>
+          <div className="self-end flex flex-col items-end">
+            <p className=" text-danger font-bold">
+              {avaliableQty === 0 && "Out of stock"}
+            </p>
+            {isPromo ? (
+              <div className="flex flex-col items-end">
+                <p className="font-semibold">
+                  From{" "}
+                  <span className="line-through">
+                    {formatNumber(product?.price)}
+                  </span>
+                </p>
+                <p className="text-2xl font-bold text-white bg-danger p-2">
+                  {formatNumber(product?.promotionalPrice)}
+                </p>
+              </div>
+            ) : (
+              <p className="text-2xl font-bold">
+                {formatNumber(product?.price)}
+              </p>
+            )}
           </div>
         </div>
       </div>
