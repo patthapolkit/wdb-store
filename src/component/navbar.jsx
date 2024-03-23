@@ -8,46 +8,21 @@ function Navbar() {
 
   return (
     <div>
-      <nav class="bg-black flex justify-between items-center w-full ">
-        {/* <div class="flex justify-between">
-          <div class="flex space-x-4 px-2"> */}
-        <div class="flex pl-20">
-          <div class="flex items-center text-white text-lg px-5 ">
-            <a
-              href="/src/index.html"
-              class="flex justify-between hover:text-gray-400	"
-            >
-              <img class="w-10 h-10 p-1 " src="Group.png"></img>
-              <p class="justify-center">WDB</p>
+      <nav className="bg-black flex justify-between items-center w-full h-[60px]">
+        <div className="flex items-center text-white">
+          <div className="flex items-center justify-center pl-[160px] ">
+            <a className="hidden md:flex hover:text-gray-400 gap-[10.42px] ">
+              <img className="w-10 h-10" src="Group.png"></img>
+              <div className="self-center font-semibold text-lg pr-10">WDB</div>
             </a>
           </div>
-          <ul class=" items-center space-x-1 text-white hidden md:flex">
-            <li>
-              <a href="/src/blogs.html" class="py-5 px-3 hover:text-gray-400	">
-                Men
-              </a>
-            </li>
-            <li>
-              <a href="/src/contact.html" class="py-5 px-3 hover:text-gray-400	">
-                Women
-              </a>
-            </li>
-            <li>
-              <a href="/src/index.html" class="py-5 px-3 hover:text-gray-400	">
-                Kids
-              </a>
-            </li>
-            <li>
-              <a href="/src/index.html" class="py-5 px-3 hover:text-gray-400	">
-                Shoes
-              </a>
-            </li>
-            <li>
-              <a href="/src/index.html" class="py-5 px-3 hover:text-gray-400	">
-                Accessories
-              </a>
-            </li>
-          </ul>
+          <div className="items-center space-x-1 py-5 text-white hidden md:flex">
+            <a className="py-5 px-3 hover:text-gray-400 ">Men</a>
+            <a className="py-5 px-3 hover:text-gray-400	">Women</a>
+            <a className="py-5 px-3 hover:text-gray-400	">Kids</a>
+            <a className="py-5 px-3 hover:text-gray-400	">Shoes</a>
+            <a className="py-5 px-3 hover:text-gray-400	">Accessories</a>
+          </div>
           {/* hide menu and change to hamburger */}
           <div className="md:hidden">
             <button
@@ -67,49 +42,48 @@ function Navbar() {
                 <path d="M4 6h16M4 12h16M4 16h16"></path>
               </svg>
             </button>
+            <div className="flex items-center justify-center pl-[160px] ">
+              <a className="flex hover:text-gray-400 gap-[10.42px]">
+                <img className="w-10 h-10" src="Group.png"></img>
+                <div className="self-center font-semibold text-lg pr-10">
+                  WDB
+                </div>
+              </a>
+            </div>
           </div>
         </div>
 
-        <div class="justify-self-end	flex text-white pr-20">
-          <a href="" class="py-5 px-3 hover:text-gray-400">
-            Shopping Bag
+        <div className="justify-self-end	flex text-white pr-40">
+          <a href="" className="py-5 px-3 hover:text-gray-400">
+            <img src="/public/shopping.svg"></img>
           </a>
         </div>
-        {/* </div> */}
-        {/* </div>
-        </div> */}
+
         {/* mobile menu  */}
         {isMenuopen ? (
-          <ul class=" flex-col items-center space-x-1 text-white md:hidden">
-            <li>
-              <a href="/src/blogs.html" class="py-5 px-3 hover:text-gray-400	">
-                Men
-              </a>
-            </li>
-            <li>
-              <a href="/src/contact.html" class="py-5 px-3 hover:text-gray-400	">
-                Women
-              </a>
-            </li>
-            <li>
-              <a href="/src/index.html" class="py-5 px-3 hover:text-gray-400	">
-                Kids
-              </a>
-            </li>
-            <li>
-              <a href="/src/index.html" class="py-5 px-3 hover:text-gray-400	">
-                Shoes
-              </a>
-            </li>
-            <li>
-              <a href="/src/index.html" class="py-5 px-3 hover:text-gray-400	">
-                Accessories
-              </a>
-            </li>
-          </ul>
+          <div className=" flex-col items-center space-x-1 text-white md:hidden">
+            <a href="/src/blogs.html" className="py-5 px-3 hover:text-gray-400	">
+              Men
+            </a>
+            <a
+              href="/src/contact.html"
+              className="py-5 px-3 hover:text-gray-400	"
+            >
+              Women
+            </a>
+            <a href="/src/index.html" className="py-5 px-3 hover:text-gray-400	">
+              Kids
+            </a>
+            <a href="/src/index.html" className="py-5 px-3 hover:text-gray-400	">
+              Shoes
+            </a>
+            <a href="/src/index.html" className="py-5 px-3 hover:text-gray-400	">
+              Accessories
+            </a>
+          </div>
         ) : null}
       </nav>
-      <div class="border-spacing-2 bg-black"></div>
+      <div className="border-spacing-2 bg-black"></div>
     </div>
   );
 }

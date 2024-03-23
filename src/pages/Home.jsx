@@ -12,9 +12,6 @@ export default class Home extends Component {
         <Image />
         <Blogcolumns />
         <div>
-          <ProductCard />
-        </div>
-        <div>
           <Footer />
         </div>
       </div>
