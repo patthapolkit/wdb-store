@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Navbar } from "../component/navbar";
-import { Footer } from "../component/footer";
-import { ProductCard } from "../component/productcard";
-import { Image } from "../component/image";
-import { Blogcolumns } from "../component/blogcolums";
+import { Navbar } from "../components/navbar";
+import { Footer } from "../components/footer";
+import { ProductCard } from "../components/productcard";
+import { Image } from "../components/image";
+import { Blogcolumns } from "../components/blogcolums";
 export default class Home extends Component {
   render() {
     return (
