@@ -1,0 +1,41 @@
+<footer className="flex flex-col text-black justify-center w-full sm:text-left">
+        <section className="flex justify-between">
+          <div className="flex flex-col gap-6 w-2/6">
+            <h3 className="font-bold text-[32px]">Jane Doe</h3>
+            <form onsubmit="onSubmit(event)" className="flex flex-col gap-4">
+              <input
+                type="email"
+                name="myEmail"
+                placeholder="Enter your email"
+                className="py-[14px] pl-4 w-full text-wd-black"
+              />
+              <button
+                type="submit"
+                className="bg-primary text-[#010101] px-[33px] py-3 w-1/2"
+              >
+                Subscribe <i className="fa-solid fa-arrow-right"></i>
+              </button>
+            </form>
+          </div>
+          <div className="flex flex-col gap-6 w-2/6">
+            <h3 className="font-bold text-[32px]">Get in touch!</h3>
+            <p>
+              MBK Tower 20th Floor, 444, Phaya Thai Rd, Wang Mai, Pathum Wan,
+              Bangkok 10330
+            </p>
+            <p>Email: tanapol@skooldio.com</p>
+            <div className="flex gap-4">
+              <i className="fa-brands fa-facebook fa-2xl text-wd-brand"></i>
+              <i className="fa-brands fa-instagram fa-2xl text-wd-brand"></i>
+              <i className="fa-brands fa-x-twitter fa-2xl text-wd-brand"></i>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <p className="text-center font-bold border-t-[1px] border-primary py-12 mt-12">
+            © 2023, Jane Doe. All Rights Reserved.
+          </p>
+        </section>
+      </footer>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
