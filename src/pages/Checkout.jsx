@@ -7,11 +7,12 @@ export default function Checkout() {
   const [items, setItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [cartId, setCartId] = useState("");
+  const [cartId, setCartId] = useState("H8ypnablMoINttMKysN4");
 
-  useEffect(() => {
-    setCartId(localStorage.getItem("cartId"));
-  }, []);
+  // useEffect(() => {
+  //   // localStorage.setItem("cartId", "JPObn5gYjlxi6pn9MHQAb");
+  //   setCartId(localStorage.getItem("cartId"));
+  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,14 +28,15 @@ export default function Checkout() {
   }, [cartId]);
 
   useEffect(() => {
-    items.map(async (item) => {
-      setLoading(true);
+    setLoading(true);
+    const products = items.map(async (item) => {
       const res = await axios.get(
         `https://api.storefront.wdb.skooldio.dev/products/${item.productPermalink}`
       );
-      setProducts((prev) => [...prev, res.data]);
-      setLoading(false);
+      return res.data;
     });
+    setLoading(false);
+    Promise.all(products).then((res) => setProducts(res));
   }, [items]);
 
   const findIndex = (item) => {
@@ -44,26 +46,32 @@ export default function Checkout() {
   };
 
   const deleteItem = async (id) => {
-    axios.delete(
+    setLoading(true);
+    await axios.delete(
       `https://api.storefront.wdb.skooldio.dev/carts/${cartId}/items/${id}`
     );
+    setLoading(false);
     setItems(items.filter((item) => item.id !== id));
   };
 
   const updateItem = async (skuCode, quantity, id) => {
-    axios.patch(
+    setLoading(true);
+    await axios.patch(
       `https://api.storefront.wdb.skooldio.dev/carts/${cartId}/items/${id}`,
       {
         skuCode: skuCode,
-        quantity: quantity,
+        quantity: Number(quantity),
       }
     );
+    setLoading(false);
     setItems(
-      items.map((item) =>
-        item.id === id
-          ? { ...item, skuCode: skuCode, quantity: quantity }
-          : item
-      )
+      items.filter((item) => {
+        if (item.id === id) {
+          item.skuCode = skuCode;
+          item.quantity = Number(quantity);
+        }
+        return item;
+      })
     );
   };
 
@@ -84,8 +92,10 @@ export default function Checkout() {
                   key={item.id}
                   item={item}
                   product={products[findIndex(item)]}
+                  //setItems={setItems}
                   deleteItem={deleteItem}
                   updateItem={updateItem}
+                  // items={item}
                 />
               ))
             ) : (
@@ -106,7 +116,12 @@ export default function Checkout() {
               </div>
             )}
           </div>
-          <Summary items={items} products={products} findIndex={findIndex} />
+          <Summary
+            items={items}
+            products={products}
+            findIndex={findIndex}
+            setItems={setItems}
+          />
         </div>
       )}
       {items.length <= 0 && (

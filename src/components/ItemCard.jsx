@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function ItemCard(props) {
   const { id, skuCode, quantity } = props.item;
@@ -10,9 +10,9 @@ export default function ItemCard(props) {
     (variant) => variant.skuCode === skuCode
   );
 
-  const [selectedColor, setSelectedColor] = useState(defaultVariant?.color);
-  const [selectedSize, setSelectedSize] = useState(defaultVariant?.size);
-  const [selectedQty, setSelectedQty] = useState(quantity);
+  const selectedColor = defaultVariant?.color;
+  const selectedSize = defaultVariant?.size;
+  const selectedQty = quantity;
 
   const uniqueColors = [
     ...new Set(product?.variants?.map((variant) => variant.color)),
@@ -42,6 +42,10 @@ export default function ItemCard(props) {
       (variant) => variant.color === color && variant.size === size
     );
     return variant?.skuCode;
+  };
+
+  const sizeRemain = (size) => {
+    return product?.variants?.find((variant) => variant.size === size)?.remains;
   };
 
   return (
@@ -78,10 +82,9 @@ export default function ItemCard(props) {
                   className="w-full h-[54px] border px-2.5 focus:outline-none appearance-none"
                   value={selectedColor}
                   onChange={(e) => {
-                    setSelectedColor(e.target.value);
                     updateItem(
                       findSkuCode(e.target.value, selectedSize),
-                      Number(selectedQty),
+                      selectedQty,
                       id
                     );
                   }}
@@ -111,19 +114,24 @@ export default function ItemCard(props) {
                   className="w-full h-[54px] border px-2.5 focus:outline-none appearance-none"
                   value={selectedSize}
                   onChange={(e) => {
-                    setSelectedSize(e.target.value);
                     updateItem(
                       findSkuCode(selectedColor, e.target.value),
-                      Number(selectedQty),
+                      selectedQty,
                       id
                     );
                   }}
                 >
                   {availableSizes?.map((size) =>
                     size !== "" ? (
-                      <option key={id + size} value={size}>
-                        {size}
-                      </option>
+                      sizeRemain(size) > 0 ? (
+                        <option key={id + size} value={size}>
+                          {size}
+                        </option>
+                      ) : (
+                        <option key={id + size} value={size} disabled>
+                          {size} (Out of stock)
+                        </option>
+                      )
                     ) : (
                       <option key={id + "-"} value="-">
                         -
@@ -146,9 +154,11 @@ export default function ItemCard(props) {
                   className="w-full h-[54px] border px-2.5 focus:outline-none appearance-none"
                   value={selectedQty}
                   onChange={(e) => {
-                    if (avaliableQty === 0) return;
-                    setSelectedQty(e.target.value);
-                    updateItem(findSkuCode(), Number(e.target.value), id);
+                    updateItem(
+                      findSkuCode(selectedColor, selectedSize),
+                      e.target.value,
+                      id
+                    );
                   }}
                 >
                   {avaliableQty > 0 ? (
@@ -178,16 +188,16 @@ export default function ItemCard(props) {
                 <p className="font-semibold">
                   From{" "}
                   <span className="line-through">
-                    {formatNumber(product?.price)}
+                    {formatNumber(product?.price * selectedQty)}
                   </span>
                 </p>
                 <p className="text-2xl font-bold text-white bg-danger p-2">
-                  {formatNumber(product?.promotionalPrice)}
+                  {formatNumber(product?.promotionalPrice * selectedQty)}
                 </p>
               </div>
             ) : (
               <p className="text-2xl font-bold">
-                {formatNumber(product?.price)}
+                {formatNumber(product?.price * selectedQty)}
               </p>
             )}
           </div>
