@@ -15,18 +15,24 @@ export default function ProductDetails() {
   const [rating, setRating] = useState(0);
   const [colorData, setColorData] = useState([]);
   const [sizeData, setSizeData] = useState([]);
-  const [currentImg, setCurrentImg] = useState("");
-  const [count, setCount] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handlePreviewClick = (event) => {
-    const src = event.target.src;
-    setCurrentImg(src);
+  const handlePrev = () => {
+    const newIndex =
+      currentIndex === 0 ? data.imageUrls.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
   };
 
-  const colorOfButton = (code) => {
-    const res = `bg-[${code}] aspect-square w-[54px]`;
-    console.log(res);
-    return res;
+  const handleNext = () => {
+    const newIndex =
+      currentIndex === data.imageUrls.length - 1 ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const handlePreviewClick = (index) => {
+    // console.log(index);
+    // const index = event.target.index;
+    setCurrentIndex(index);
   };
 
   const getSizes = (variants) => {
@@ -58,6 +64,7 @@ export default function ProductDetails() {
       ...new Set(tempCollect.map((obj) => JSON.stringify(obj))),
     ].map((str) => JSON.parse(str));
     setColorData(uniqueVariants);
+    // console.log(uniqueVariants);
   };
 
   const calculateStar = (num) => {
@@ -77,7 +84,7 @@ export default function ProductDetails() {
         calculateStar(response?.ratings ?? 0);
         getColors(response?.variants ?? []);
         getSizes(response?.variants ?? []);
-        setCurrentImg(response.imageUrls[0]);
+        // setCurrentImg(response.imageUrls[0]);
         setLoading(false);
       } catch (error) {
         console.error(error.message);
@@ -98,41 +105,49 @@ export default function ProductDetails() {
             <div className="flex flex-col lg:flex-row lg:gap-x-10">
               {/*Image review*/}
               <div className="flex flex-col gap-y-4 mb-5  lg:w-[780px] lg:gap-y-[31px]">
-                <div className="carousel">
-                  <div id="slide1" className="carousel-item relative w-full">
-                    {/* <SaleLabel /> */}
-                    {/* <OutStockLabel /> */}
-                    <img
-                      src={currentImg}
-                      alt="Previewing Image"
-                      className="w-full object-cover"
-                    />
-                    <div className="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2">
-                      <a
-                        href="#slide4"
-                        className="btn btn-circle w-8 h-8 min-h-6 border-none bg-secondary-50/30 lg:w-[70px] lg:h-[70px]"
+                <div className="relative w-full h-full">
+                  <div className="flex w-full h-full">
+                    {data.imageUrls.map((image, index) => (
+                      <div
+                        key={index}
+                        className={`absolute top-0 left-0 w-full h-full opacity-0 transition duration-500 ease-in-out ${
+                          index === currentIndex ? "opacity-100 z-10" : ""
+                        }`}
                       >
-                        <LeftArrow />
-                      </a>
-                      <a
-                        href="#slide2"
-                        className="btn btn-circle w-8 h-8 min-h-6 border-none bg-secondary-50/30 lg:w-[70px] lg:h-[70px]"
-                      >
-                        <RightArrow />
-                      </a>
-                    </div>
+                        <img
+                          src={image}
+                          alt={"Image"}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ))}
                   </div>
+                  <button
+                    type="button"
+                    onClick={handlePrev}
+                    className="absolute top-1/2 left-2 z-10 btn btn-circle w-8 h-8 min-h-6 border-none bg-secondary-50/30 lg:w-[70px] lg:h-[70px]"
+                    disabled={currentIndex === 0}
+                  >
+                    <LeftArrow />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    className="absolute top-1/2 right-2 z-10 btn btn-circle w-8 h-8 min-h-6 border-none bg-secondary-50/30 lg:w-[70px] lg:h-[70px]"
+                    disabled={currentIndex === data.imageUrls.length - 1}
+                  >
+                    <RightArrow />
+                  </button>
                 </div>
                 <div className="flex justify-between w-full gap-2">
-                  {data?.imageUrls?.map((img) => (
-                    <a
+                  {data?.imageUrls?.map((img, index) => (
+                    <button
                       key={img}
-                      href="#item1"
                       className="btn px-0 flex-1 h-auto"
-                      onClick={handlePreviewClick}
+                      onClick={() => handlePreviewClick(index)}
                     >
                       <img src={img} alt={`Image ${img}`} />
-                    </a>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -201,11 +216,12 @@ export default function ProductDetails() {
                         {colorData.map((color) => (
                           <div
                             key={color.code}
-                            className="flex flex-col gap-y-2 items-center w-full lg:w-[100px]"
+                            className="flex flex-col gap-y-2 items-center w-full lg:w-[100px] "
                           >
                             <button
                               type="button"
-                              className={colorOfButton(color.code)}
+                              className="aspect-square w-[54px] h-[54px]"
+                              style={{ backgroundColor: color.code }}
                             ></button>
                             <p className="text-sm">{color.name}</p>
                           </div>
