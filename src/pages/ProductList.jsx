@@ -1,7 +1,6 @@
 import React, { Component, useState } from "react";
-// import Navbar from "../components/Navbar";
-// import DeskNav from "../components/DeskNav";
-import Bottomsheet from "../components/Bottomsheet";
+import DeskNav from "../components/DeskNav";
+import Sortby from "../components/Sortby";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons"; // Importing the filter icon
 import Sidebar from "../components/Sidebar";
@@ -14,8 +13,6 @@ export default class ProductList extends Component {
     isMobile: false, // State to track if the device is mobile
     openSidebar: false,
   };
-
-  // const [openSidebar, setOpenSidebar] = useState()
 
   componentDidMount() {
     // Add event listener to track window resize
@@ -48,7 +45,7 @@ export default class ProductList extends Component {
     const { isMobile, openSidebar } = this.state;
     const gridCols = isMobile ? "grid-cols-1" : "grid-cols-3"; // Set the grid column classes based on isMobile state
     return (
-      <div className="min-h-screen">
+      <div className="bg-white min-h-screen">
         <Sidebar
           open={openSidebar}
           setOpen={(x) => this.setState({ openSidebar: x })}
@@ -56,60 +53,30 @@ export default class ProductList extends Component {
         <button onClick={() => this.setState({ openSidebar: true })}>
           Open
         </button>
-        {/* <DeskNav /> */}
         <div className="main-content p-6">
           <div className="topic text-center mb-4 font-bold">
             Woman's Clothing
           </div>
-          <div className="sort-button-container flex justify-end items-center mb-4">
-            {/* Clickable "Sort By" button with filter icon on desktop */}
-            <button className="sort-button" onClick={this.toggleBottomSheet}>
+          {/* Clickable "Sort By" button with filter icon on desktop */}
+          <div className="flex items-center justify-end mb-4">
+            <button
+              className="sort-button sort-button-container border
+              border-[#C1CD00] px-2 py-2"
+              onClick={this.toggleBottomSheet}
+            >
               Sort By <FontAwesomeIcon icon={faChevronDown} />
             </button>
-            {/* CoBottomsheetnditionally render Bottomsheet component */}
-            <Bottomsheet
+          </div>
+          <div>
+            {/* Conditionally render Bottomsheet component */}
+            <Sortby
               bottomSheetVisible={this.state.bottomSheetVisible}
               toggleBottomSheet={this.toggleBottomSheet}
               handleOutsideClick={this.toggleBottomSheet} // Add handleOutsideClick prop
               isMobile={isMobile} // Pass isMobile as a prop
             />
           </div>
-
-          <div className={`grid ${gridCols} gap-4`}>
-            {[1, 2, 3].map((index) => (
-              <div
-                key={index}
-                className="product-card border border-gray-200 rounded overflow-hidden"
-              >
-                <img
-                  src="product-image.jpg"
-                  alt="Product Image"
-                  className="product-image w-full h-64 object-cover"
-                />
-                <div className="product-info p-4">
-                  <h2 className="product-title text-lg font-semibold mb-2">
-                    Product Title
-                  </h2>
-                  <p className="product-description mb-2">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
-                    consectetur lectus ac metus finibus, nec ultrices libero
-                    fermentum.
-                  </p>
-                  <div className="product-rating mb-2">
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9734;</span>
-                  </div>
-                  <p className="product-price mb-0">
-                    Sale Price: $19.99{" "}
-                    <span className="original-price">$29.99</span>
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          {!isMobile && <DeskNav />} {/* Render DeskNav only if not mobile */}
         </div>
       </div>
     );
