@@ -93,10 +93,8 @@ export default function Checkout() {
                   key={item.id}
                   item={item}
                   product={products[findIndex(item)]}
-                  //setItems={setItems}
                   deleteItem={deleteItem}
                   updateItem={updateItem}
-                  // items={item}
                 />
               ))
             ) : (
@@ -128,7 +126,12 @@ export default function Checkout() {
       {items.length <= 0 && (
         <h1 className="font-bold text-32px my-10">People also like these</h1>
       )}
-      <ProductCard />
+      <ProductCard
+        name={"test"}
+        price={1000}
+        promotionalPrice={1000}
+        description={"test2"}
+      />
     </div>
   );
 }
