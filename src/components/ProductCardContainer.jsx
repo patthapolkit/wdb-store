@@ -1,4 +1,4 @@
-const ProductCard = () => {
+const ProductCardContainer = () => {
   // <!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
 
   return (
@@ -136,4 +136,4 @@ const ProductCard = () => {
   );
 };
 
-export { ProductCard };
+export { ProductCardContainer };
