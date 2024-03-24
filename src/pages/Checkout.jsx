@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ItemCard from "../components/ItemCard";
 import Summary from "../components/Summary";
 import axios from "axios";
+import ProductCard from "../components/ProductCard";
 
 export default function Checkout() {
   const [items, setItems] = useState([]);
@@ -127,6 +128,7 @@ export default function Checkout() {
       {items.length <= 0 && (
         <h1 className="font-bold text-32px my-10">People also like these</h1>
       )}
+      <ProductCard />
     </div>
   );
 }
