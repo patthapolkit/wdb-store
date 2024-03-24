@@ -1,17 +1,19 @@
 import StarRating from "./StarRating";
 
-export default function ProductCard() {
+export default function ProductCard({
+  image,
+  name,
+  description,
+  price,
+  rating,
+}) {
   return (
     <div className="flex flex-col w-[370px] gap-4">
-      <img
-        src="/public/vite.svg"
-        alt=""
-        className="h-[370px] object-cover"
-      ></img>
-      <p className="font-bold text-2xl truncate w-full">Product Name</p>
-      <p className="truncate text-secondary-700 w-full">Price</p>
-      <StarRating value={3.8} />
-      <p className="font-bold text-2xl w-full text-end">Price</p>
+      <img src={image} alt={name} className="h-[370px] object-cover"></img>
+      <p className="font-bold text-2xl truncate w-full">{name}</p>
+      <p className="truncate text-secondary-700 w-full">{description}</p>
+      <StarRating value={rating} />
+      <p className="font-bold text-2xl w-full text-end">{price}</p>
     </div>
   );
 }

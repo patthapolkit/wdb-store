@@ -1,32 +1,24 @@
-import { FaStar, FaStarHalf } from "react-icons/fa";
-
 export default function StarRating({ value }) {
   return (
     <div className="flex flex-row gap-1">
       {Array.from(Array(5)).map((_, index) => {
         const starSerialNumber = index + 1;
 
-        if (starSerialNumber <= Math.floor(value)) {
+        if (starSerialNumber <= Math.round(value)) {
           return (
             <div key={starSerialNumber} className="flex">
-              <FaStar className="text-primary-base w-4 h-4"></FaStar>
+              <img src="/src/assets/filled-star.svg" alt="" />
             </div>
           );
         }
 
-        if (starSerialNumber > Math.ceil(value)) {
+        if (starSerialNumber > Math.round(value)) {
           return (
             <div key={starSerialNumber} className="flex">
-              <FaStar className=" text-secondary-300 w-4 h-4"></FaStar>
+              <img src="/src/assets/empty-star.svg" alt="" />
             </div>
           );
         }
-
-        return (
-          <div key={starSerialNumber} className="flex">
-            <FaStarHalf className="text-primary-base w-4 h-4"></FaStarHalf>
-          </div>
-        );
       })}
     </div>
   );
