@@ -105,7 +105,7 @@ const Footer = () => {
           </div>
         </section>
       </footer> */}
-      <footer className="flex flex-col text-white bg-black justify-center w-full sm:text-left">
+      <footer className="flex flex-col text-white bg-black justify-center w-full lg:text-left text-center ">
         <section className="flex flex-col sm:flex-row justify-between">
           <div className="flex flex-col sm:w-2/4">
             <h3 className="font-bold text-2xl sm:text-3xl px-6 sm:px-12 py-4">
@@ -129,9 +129,9 @@ const Footer = () => {
             <p className="text-base px-6 pb-6">Email: jane.doe@realmail.com</p>
           </div>
         </section>
-        <div className="flex justify-between px-6 sm:px-12 pb-6 text-xs text-gray-500 ">
+        <div className="flex flex-col justify-center items-center md:flex-row lg:justify-between px-6 sm:px-12 pb-6 text-xs text-gray-500 ">
           <p>Copyright © 2024 All rights reserved for all contents.</p>
-          <div className="flex">
+          <div className="flex ">
             <p className="mr-2">Powered By</p>
             <img src="/Storefront.png" alt="Sponsor" className="h-4" />
           </div>

@@ -35,7 +35,7 @@ const Blogcolumns = () => {
             </div>
 
             <div className="flex flex-col overflow-hidden rounded-lg bg-imageblock2 bg-cover object-contain h-[500px] ">
-              <div className="flex flex-1 flex-shrink-0 flex-col justify-end p-4">
+              <div className="flex flex-1 flex-shrink-0 flex-col justify-end p-4 bg-gradient-to-t from-[#222222]">
                 <div className="flex flex-col items-center gap-4">
                   <p className="text-2xl font-bold text-white">Cozy Breeze</p>
                   <p className="mt-3 text-base text-white">
@@ -53,8 +53,8 @@ const Blogcolumns = () => {
             </div>
 
             <div className="flex flex-col overflow-hidden rounded-lg bg-imageblock3 bg-cover object-contain h-[500px] ">
-              <div className="flex flex-shrink-0 flex-1 flex-col  p-4">
-                <div className="flex flex-1 flex-col items-center justify-end gap-4">
+              <div className="flex flex-shrink-0 flex-1 flex-col  p-4 bg-gradient-to-t from-[#222222]">
+                <div className="flex flex-1 flex-col items-center justify-end gap-4 ">
                   <p className="text-2xl font-bold text-white">Flexi Move</p>
                   <p className="mt-3 text-base text-white">
                     Step into a world where fashion meets functionality with our
