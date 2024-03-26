@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export default function ItemCard(props) {
   const { id, skuCode, quantity } = props.item;
   const product = props.product;

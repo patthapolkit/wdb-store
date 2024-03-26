@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ItemCard from "../components/ItemCard";
 import Summary from "../components/Summary";
 import axios from "axios";
+import ProductCard from "../components/ProductCard";
 
 export default function Checkout() {
   const [items, setItems] = useState([]);
@@ -93,10 +94,8 @@ export default function Checkout() {
                   key={item.id}
                   item={item}
                   product={products[findIndex(item)]}
-                  //setItems={setItems}
                   deleteItem={deleteItem}
                   updateItem={updateItem}
-                  // items={item}
                 />
               ))
             ) : (
@@ -128,6 +127,12 @@ export default function Checkout() {
       {items.length <= 0 && (
         <h1 className="font-bold text-32px my-10">People also like these</h1>
       )}
+      <ProductCard
+        name={"test"}
+        price={1000}
+        promotionalPrice={1000}
+        description={"test2"}
+      />
     </div>
   );
 }

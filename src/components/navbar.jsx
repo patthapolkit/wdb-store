@@ -65,7 +65,7 @@ const Navbar = () => {
         </div>
         <div className="justify-self-end flex text-white mr-4 lg:mr-[160px]">
           <a href="" className="py-5 px-3 hover:text-gray-400">
-            <img src="/public/shopping.svg" alt="Shopping cart" />
+            <img src="/shopping.svg" alt="shopping cart"></img>
           </a>
         </div>
       </nav>
