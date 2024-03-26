@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ItemCard from "../components/ItemCard";
 import Summary from "../components/Summary";
 import axios from "axios";
-import ProductCard from "../components/ProductCard";
+import ProductCardContainer from "../components/ProductCardContainer";
 
 export default function Checkout() {
   const [items, setItems] = useState([]);
@@ -78,8 +78,8 @@ export default function Checkout() {
   };
 
   return (
-    <div className="mx-4 lg:mx-40">
-      <h1 className="font-bold text-32px my-8 lg:my-10">My cart</h1>
+    <div className="mx-4 lg:mx-40 mb-10 ">
+      <h1 className="font-bold text-[32px] my-8 lg:my-10">My cart</h1>
       {loading ? (
         <div className="flex justify-center items-center">
           <span className="loading loading-spinner loading-md"></span>
@@ -125,14 +125,13 @@ export default function Checkout() {
         </div>
       )}
       {items.length <= 0 && (
-        <h1 className="font-bold text-32px my-10">People also like these</h1>
+        <>
+          <h1 className="font-bold text-[32px] my-10">
+            People also like these
+          </h1>
+          <ProductCardContainer />
+        </>
       )}
-      <ProductCard
-        name={"test"}
-        price={1000}
-        promotionalPrice={1000}
-        description={"test2"}
-      />
     </div>
   );
 }
