@@ -16,21 +16,18 @@ export default function ProductCardContainer() {
 
   return (
     <>
-      <div className="flex flex-col items-center px-4 lg:px-[160px] gap-10 lg:gap-16">
-        <h1 className="font-bold text-[32px]">Featured Product</h1>
-        <div className="gap-10 flex flex-col lg:flex-row">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              image={product.imageUrls[0]}
-              name={product.name}
-              promotionalPrice={product.promotionalPrice}
-              price={product.price}
-              rating={product.ratings}
-              description={product.description}
-            />
-          ))}
-        </div>
+      <div className="gap-10 flex flex-col lg:flex-row items-center">
+        {products.map((product) => (
+          <ProductCard
+            key={product.id}
+            image={product.imageUrls[0]}
+            name={product.name}
+            promotionalPrice={product.promotionalPrice}
+            price={product.price}
+            rating={product.ratings}
+            description={product.description}
+          />
+        ))}
       </div>
     </>
   );
