@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function Sortby({
   bottomSheetVisible,
@@ -85,7 +85,7 @@ export default function Sortby({
       // Desktop view
       return (
         <>
-          <div class="text-left flex justify-items-start absolute top-20 right-10">
+          <div className="text-left flex justify-items-start absolute top-20 right-10">
             <div
               id="bottomsheet-container"
               className="bottom-0 right-0 w-56 rounded-md bg-white shadow-lg ring-1 ring-[#C1CD00] ring-opacity-5"

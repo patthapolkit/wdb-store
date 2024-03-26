@@ -1,45 +1,22 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { categories } from "../constants/deskMenus";
 
-const categories = [
-  {
-    key: "Tops",
-    submenu: [
-      "All items",
-      "T-shirts",
-      "Cardigans",
-      "Knitwear & Sweaters",
-      "Sweatshirts & Hoodies",
-      "Fleece",
-    ],
-  },
-  { key: "Bottoms", submenu: ["All items", "Jeans", "Shorts"] },
-  {
-    key: "Dress & Jumpsuits",
-    submenu: ["All items", "Long dress", "Short dress", "Mini dress"],
-  },
-  { key: "Accessories", submenu: ["All items", "Rings", "Necklaces"] },
-  { key: "Collections", submenu: ["All items", "Summer", "Winter"] },
-];
-
-const DeskNav = () => {
+export default function DeskNav() {
   const [expandedCategory, setExpandedCategory] = useState(null);
-  const [focusedIndex, setFocusedIndex] = useState(0);
-  const [activated, setActivated] = useState(null);
 
-  const handleCategoryClick = (category, index) => {
+  const handleCategoryClick = (category) => {
     setExpandedCategory(expandedCategory === category ? null : category);
-    setFocusedIndex(index); // Set focused index when category is clicked
   };
 
   return (
-    <div className="sidebar text-left flex flex-col font-bold bg-white">
-      {categories.map((category, index) => (
+    <div className="flex flex-col w-72">
+      {categories.map((category) => (
         <div key={category.key}>
           <button
-            className="category-button flex items-center justify-between px-4 py-4"
-            onClick={() => handleCategoryClick(category.key, index)}
+            className="flex w-full items-center justify-between font-semibold text-lg py-3"
+            onClick={() => handleCategoryClick(category.key)}
           >
             {category.key}
             <FontAwesomeIcon
@@ -49,14 +26,13 @@ const DeskNav = () => {
             />
           </button>
           {expandedCategory === category.key && (
-            <div className="submenu font-semibold">
+            <div className="text-sm flex flex-col items-start font-semibold w-full">
               {category.submenu.map((item, subIndex) => (
                 <button
                   key={`${item}-${subIndex}`}
-                  className="submenu-item py-2 px-4 hover:bg-[#F2F2F2] font-semibold display: flex flex-grow: 1"
+                  className="py-2.5 px-2.5 hover:bg-primary-base w-full text-left last:border-b-[1px]"
                   onClick={() => {
                     handleCategoryClick(category.key, subIndex);
-                    setActivated(item);
                   }}
                 >
                   {item}
@@ -68,6 +44,4 @@ const DeskNav = () => {
       ))}
     </div>
   );
-};
-
-export default DeskNav;
+}
