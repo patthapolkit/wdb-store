@@ -3,7 +3,6 @@ import axios from "axios";
 import DeskNav from "../components/DeskNav";
 import Sidebar from "../components/Sidebar";
 import ProductCard from "../components/ProductCard";
-import { Navbar } from "../components/navbar";
 
 export default function ProductList() {
   const [menuVisible, setMenuVisible] = useState(false);

@@ -16,7 +16,7 @@ export default function ProductCard({
     return new Intl.NumberFormat().format(number);
   };
   return (
-    <div className="flex flex-col w-[370px] gap-4 relative">
+    <div className="flex flex-col w-[340px] lg:w-[370px] gap-4 relative">
       {discountPercentage > 0 && (
         <div className="bg-danger py-1 px-2.5 w-fit h-fit text-white absolute right-0 top-8">
           - {discountPercentage}%

@@ -6,8 +6,8 @@ import Home from "./pages/Home.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
 import ProductList from "./pages/ProductList.jsx";
-import { Navbar } from "./components/navbar.jsx";
-import { Footer } from "./components/footer.jsx";
+import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Navbar />
+    {/* <Navbar /> */}
     <RouterProvider router={router} />
     <Footer />
   </React.StrictMode>
