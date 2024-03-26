@@ -1,19 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faChevronRight,
-  faChevronLeft,
-} from "@fortawesome/free-solid-svg-icons";
 
 export default function Sidebar(props) {
   // const [menuVisible, setMenuVisible] = useState(false);
+
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [submenuVisible, setSubmenuVisible] = useState(false);
   const [selectedSubmenu, setSelectedSubmenu] = useState(null);
   const [thirdSubmenuVisible, setThirdSubmenuVisible] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false); // Add isDesktop state
-  const [sideDeskVisible, setSideDeskVisible] = useState(true); // Set sidebar sheet visible by default on desktop
+  // const [isDesktop, setIsDesktop] = useState(false); // Add isDesktop state
+  // const [sideDeskVisible, setSideDeskVisible] = useState(true); // Set sidebar sheet visible by default on desktop
 
   console.log("props :>> ", props);
   const { open: openSidebar, setOpen } = props;
@@ -137,7 +132,7 @@ export default function Sidebar(props) {
     return () => {
       document.removeEventListener("mousedown", handleClick);
     };
-  }, []);
+  }, [setOpen, sidebarRef]);
 
   //   document.addEventListener("click", handleClickOutside);
   //   return () => {
@@ -164,21 +159,21 @@ export default function Sidebar(props) {
     };
   }, []);
 
-  const sidebarClass = `sidebar-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
+  const sidebarClass = `sidebar-sheet z-50 fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
     openSidebar ? "translate-x-0" : "-translate-x-full"
   }`;
 
-  const submenuClass = `submenu-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
+  const submenuClass = `submenu-sheet z-50 fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
     submenuVisible ? "translate-x-0" : "-translate-x-full"
   }`;
 
-  const thirdSubmenuClass = `third-submenu-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
+  const thirdSubmenuClass = `third-submenu-sheet z-50 fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
     thirdSubmenuVisible ? "translate-x-0" : "-translate-x-full"
   }`;
 
-  const sidebarDeskClass = `side-desk-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
-    sideDeskVisible ? "translate-x-0" : "-translate-x-full"
-  }`;
+  // const sidebarDeskClass = `side-desk-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
+  //   sideDeskVisible ? "translate-x-0" : "-translate-x-full"
+  // }`;
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -191,15 +186,24 @@ export default function Sidebar(props) {
   };
 
   const handleThirdSubmenuClick = (thirdMenu) => {
-    setSelectedCategory(null); // Reset selected category if necessary
     setSelectedSubmenu(thirdMenu); // Set selected submenu to the clicked thirdMenu item
     setThirdSubmenuVisible(true); // Show the third submenu
   };
 
   const firstHandleBackButtonClick = () => {
-    setOpen(true); // Ensure menu is visible
-    setSelectedSubmenu(null); // Reset selected submenu
-    setThirdSubmenuVisible(false); // Close third submenu
+    if (submenuVisible) {
+      // Close submenu and reset submenu state
+      setSubmenuVisible(false);
+      setSelectedSubmenu(null);
+    } else if (thirdSubmenuVisible) {
+      // Close third submenu
+      setThirdSubmenuVisible(false);
+    } else {
+      // Close entire sidebar and reset states
+      setOpen(false);
+      setSelectedCategory(null);
+      setSelectedSubmenu(null);
+    }
   };
 
   const secondHandleBackButtonClick = () => {
@@ -219,7 +223,7 @@ export default function Sidebar(props) {
   };
 
   return (
-    <div>
+    <div className="bg-white">
       {/* <nav className="navbar flex justify-between items-center bg-gray-900 text-white px-4 py-2">
         <div className="navbar-left flex items-center">
           <div className="hamburger-menu cursor-pointer" onClick={toggleMenu}>
@@ -233,16 +237,20 @@ export default function Sidebar(props) {
         {menus.map((value) => (
           <div
             key={value.key}
-            className="py-4 pl-4 pr-4 font-semibold flex items-center justify-between"
+            className="py-4 pl-4 pr-4 font-semibold flex flex-row items-center justify-between"
           >
             {value.key !== "Home" ? (
               <button
-                className="text-left font-bold"
+                className="text-left font-bold flex items-center justify-between"
                 onClick={() => handleCategoryClick(value.key)}
               >
                 {value.key}
                 {value.submenu && value.submenu.length > 0 && (
-                  <FontAwesomeIcon icon={faChevronRight} />
+                  <img
+                    className="items-center"
+                    src="../src/assets/right-arrow.svg"
+                    alt="Sort by"
+                  />
                 )}
               </button>
             ) : (
@@ -258,9 +266,10 @@ export default function Sidebar(props) {
             className="py-4 pl-4 pr-4 font-bold flex items-center"
             onClick={firstHandleBackButtonClick}
           >
-            <FontAwesomeIcon
-              icon={faChevronLeft}
-              className="mr-2 font-semibold"
+            <img
+              className="items-center"
+              src="../src/assets/left-arrow.svg"
+              alt="Sort by"
             />
             {selectedCategory}
           </button>
@@ -277,7 +286,11 @@ export default function Sidebar(props) {
                   }}
                 >
                   {item.key}
-                  <FontAwesomeIcon icon={faChevronRight} />
+                  <img
+                    className="items-center"
+                    src="../src/assets/right-arrow.svg"
+                    alt="Sort by"
+                  />
                 </button>
               ))
             )}
@@ -288,7 +301,11 @@ export default function Sidebar(props) {
         <div className={thirdSubmenuClass}>
           <div className="py-4 pl-4 pr-4 font-semibold flex">
             <button className="" onClick={secondHandleBackButtonClick}>
-              <FontAwesomeIcon icon={faChevronLeft} />
+              <img
+                className="items-center"
+                src="../src/assets/left-arrow.svg"
+                alt="Sort by"
+              />
               <div className="items-center">{selectedSubmenu}</div>
             </button>
           </div>
