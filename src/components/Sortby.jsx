@@ -44,39 +44,37 @@ export default function Sortby({
               Reset
             </button>
           </div>
-          <div className="bottom-sheet-content">
-            <div className="radio-buttons">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  className="mr-2"
-                  value="lowToHigh"
-                  checked={selectedOption === "lowToHigh"}
-                  onChange={() => handleRadioChange("lowToHigh")}
-                />
-                Price - Low to High
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  className="mr-2"
-                  value="highToLow"
-                  checked={selectedOption === "highToLow"}
-                  onChange={() => handleRadioChange("highToLow")}
-                />
-                Price - High to Low
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  className="mr-2"
-                  value="ratings"
-                  checked={selectedOption === "ratings"}
-                  onChange={() => handleRadioChange("ratings")}
-                />
-                Ratings
-              </label>
-            </div>
+          <div className="flex flex-col">
+            <label className="flex items-center">
+              <input
+                type="radio"
+                className="mr-2"
+                value="lowToHigh"
+                checked={selectedOption === "lowToHigh"}
+                onChange={() => handleRadioChange("lowToHigh")}
+              />
+              Price - Low to High
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                className="mr-2"
+                value="highToLow"
+                checked={selectedOption === "highToLow"}
+                onChange={() => handleRadioChange("highToLow")}
+              />
+              Price - High to Low
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                className="mr-2"
+                value="ratings"
+                checked={selectedOption === "ratings"}
+                onChange={() => handleRadioChange("ratings")}
+              />
+              Ratings
+            </label>
           </div>
           <button className="bottom-sheet-footer bg-black text-white hover:bg-[#DEF81C] hover:text-black mt-4 p-2 w-full flex justify-center">
             <div className="apply-button flex items-center">Apply</div>
@@ -87,10 +85,10 @@ export default function Sortby({
       // Desktop view
       return (
         <>
-          <div class="absolute justify-self-end	flex right-0 text-left">
+          <div class="text-left flex justify-items-start absolute top-20 right-10">
             <div
-              id="bottomsheet"
-              className="bottom-sheet accent-[#DEF81C] absolute top-full right-0 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-[#C1CD00] ring-opacity-5 focus:outline-none z-50 transform translate-y-0"
+              id="bottomsheet-container"
+              className="bottom-0 right-0 w-56 rounded-md bg-white shadow-lg ring-1 ring-[#C1CD00] ring-opacity-5"
               onClick={handleClickOutside}
             >
               <label className="flex items-center px-4 py-2">
