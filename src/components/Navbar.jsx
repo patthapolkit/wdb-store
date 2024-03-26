@@ -10,17 +10,24 @@ function MenuItem({ text, href }) {
 }
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const [extendedMenu, setExtendedMenu] = useState(false);
 
   return (
     <>
       <nav className="bg-secondary-base flex flex-row justify-between items-center w-full h-[60px] px-4 lg:px-[160px] text-white">
         <div className="flex flex-row items-center justify-center gap-2 lg:gap-10">
-          <button id="menu-toggle" onClick={toggleMenu} className="lg:hidden">
+          <Sidebar
+            extendedMenu={extendedMenu}
+            setExtendedMenu={setExtendedMenu}
+          />
+
+          <button
+            id="menu-toggle"
+            onClick={() => {
+              setExtendedMenu(true);
+            }}
+            className="lg:hidden"
+          >
             <img src="/src/assets/burger-menu.svg" alt="menu" />
           </button>
           <a
@@ -43,7 +50,6 @@ export default function Navbar() {
           <img src="/src/assets/shopping-0.svg" alt="shopping cart"></img>
         </a>
       </nav>
-      {/* <Sidebar open={openSidebar} setOpen={setOpenSidebar} /> */}
     </>
   );
 }

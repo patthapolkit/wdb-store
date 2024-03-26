@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import DeskNav from "../components/DeskNav";
 import Sidebar from "../components/Sidebar";
@@ -85,7 +85,7 @@ export default function ProductList() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Navbar setOpenSidebar={setOpenSidebar} toggleMenu={toggleMenu} />
+      {/* <Navbar setOpenSidebar={setOpenSidebar} toggleMenu={toggleMenu} /> */}
       <div className="main-content p-6">
         {/* Add flexbox layout */}
         {!isMobile && (
@@ -101,7 +101,7 @@ export default function ProductList() {
                   Sort by
                   <img
                     className="items-center"
-                    src="../src/assets/chevron-down.svg"
+                    src="/src/assets/chevron-down.svg"
                     alt="Sort by"
                   />
                 </button>
@@ -117,7 +117,6 @@ export default function ProductList() {
                       promotionalPrice={product.promotionalPrice}
                       description={product.description}
                       rating={product.ratings}
-                      className=""
                     />
                   ))}
               </div>
@@ -127,8 +126,6 @@ export default function ProductList() {
 
         {isMobile && (
           <>
-            <Sidebar open={openSidebar} setOpen={setOpenSidebar} />
-            <button onClick={() => setOpenSidebar(true)}>Open</button>
             <div className="grid">
               <div className="name font-bold py-2 text-center items-center">
                 Women's Clothing
@@ -142,7 +139,7 @@ export default function ProductList() {
                     Sort by
                     <img
                       className="ml-2"
-                      src="../src/assets/filter.svg"
+                      src="/src/assets/filter.svg"
                       alt="Sort by"
                     />
                   </div>
