@@ -110,9 +110,11 @@ export default function Checkout() {
                   Looks like you have not added anything to your cart. Go ahead
                   & explore top categories.
                 </p>
-                <button className="btn rounded-none bg-secondary-base text-white font-normal text-base px-[10px] h-[54px]">
-                  Continue shopping
-                </button>
+                <a href="/list">
+                  <button className="btn rounded-none bg-secondary-base text-white font-normal text-base px-[10px] h-[54px]">
+                    Continue shopping
+                  </button>
+                </a>
               </div>
             )}
           </div>
