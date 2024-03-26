@@ -1,25 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faChevronRight,
-  faChevronLeft,
-} from "@fortawesome/free-solid-svg-icons";
 
 export default function Sidebar(props) {
   // const [menuVisible, setMenuVisible] = useState(false);
+
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [submenuVisible, setSubmenuVisible] = useState(false);
   const [selectedSubmenu, setSelectedSubmenu] = useState(null);
   const [thirdSubmenuVisible, setThirdSubmenuVisible] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false); // Add isDesktop state
-  const [sideDeskVisible, setSideDeskVisible] = useState(true); // Set sidebar sheet visible by default on desktop
+  // const [isDesktop, setIsDesktop] = useState(false); // Add isDesktop state
+  // const [sideDeskVisible, setSideDeskVisible] = useState(true); // Set sidebar sheet visible by default on desktop
 
   console.log("props :>> ", props);
   const { open: openSidebar, setOpen } = props;
 
   const sidebarRef = useRef(null);
-  const hamburgerRef = useRef(null);
+  // const hamburgerRef = useRef(null);
 
   const menus = [
     { key: "Home" },
@@ -107,30 +102,49 @@ export default function Sidebar(props) {
 
   const toggleMenu = () => setOpen(!openSidebar);
 
-  const handleClickOutside = (event) => {
-    if (
-      sidebarRef.current &&
-      !sidebarRef.current.contains(event.target) && // Check if clicked outside sidebar
-      hamburgerRef.current &&
-      !hamburgerRef.current.contains(event.target) && // Check if clicked outside hamburger menu
-      !event.target.closest(".sidebar-sheet") // Check if clicked on space besides sidebar
-    ) {
-      setOpen(false); // Close sidebar
-      setSelectedCategory(null);
-      setSubmenuVisible(false);
-      setSelectedSubmenu(null);
-      setThirdSubmenuVisible(false);
-    }
-  };
-
+  // useEffect(() => {
+  //   function handleClickOutside(event) {
+  //     if (
+  //       sidebarRef.current &&
+  //       !sidebarRef.current.contains(event.target) &&
+  //       hamburgerRef.current &&
+  //       !hamburgerRef.current.contains(event.target)
+  //     ) {
+  //       setOpen(false);
+  //     }
+  //   }
   useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    // Check window width on initial load
-    setIsDesktop(window.innerWidth >= 1024); // Set the threshold for desktop view
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
+    const handleClick = (event) => {
+      if (
+        !event.target.closest(".sidebar-sheet") &&
+        !event.target.closest(".submenu-sheet") &&
+        !event.target.closest(".third-submenu-sheet")
+      ) {
+        // Close all levels if clicked outside
+        setOpen(false);
+        setSubmenuVisible(false);
+        setThirdSubmenuVisible(false);
+      }
     };
-  }, []);
+
+    document.addEventListener("mousedown", handleClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [setOpen, sidebarRef]);
+
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, [setOpen, sidebarRef]);
+
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [setOpen, sidebarRef]);
 
   // Add event listener to track window resize for desktop view
   useEffect(() => {
@@ -145,21 +159,21 @@ export default function Sidebar(props) {
     };
   }, []);
 
-  const sidebarClass = `sidebar-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
+  const sidebarClass = `sidebar-sheet z-50 fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
     openSidebar ? "translate-x-0" : "-translate-x-full"
   }`;
 
-  const submenuClass = `submenu-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
+  const submenuClass = `submenu-sheet z-50 fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
     submenuVisible ? "translate-x-0" : "-translate-x-full"
   }`;
 
-  const thirdSubmenuClass = `third-submenu-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
+  const thirdSubmenuClass = `third-submenu-sheet z-50 fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
     thirdSubmenuVisible ? "translate-x-0" : "-translate-x-full"
   }`;
 
-  const sidebarDeskClass = `side-desk-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
-    sideDeskVisible ? "translate-x-0" : "-translate-x-full"
-  }`;
+  // const sidebarDeskClass = `side-desk-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
+  //   sideDeskVisible ? "translate-x-0" : "-translate-x-full"
+  // }`;
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -172,37 +186,44 @@ export default function Sidebar(props) {
   };
 
   const handleThirdSubmenuClick = (thirdMenu) => {
-    setSelectedCategory(null); // Reset selected category if necessary
     setSelectedSubmenu(thirdMenu); // Set selected submenu to the clicked thirdMenu item
     setThirdSubmenuVisible(true); // Show the third submenu
   };
 
   const firstHandleBackButtonClick = () => {
-    setOpen(true); // Make sure to set menuVisible to true
-    setSelectedCategory(null); // Reset selected category
-    setSubmenuVisible(false); // Hide submenu
-    setThirdSubmenuVisible(false); // Hide third submenu if necessary
-    setSelectedSubmenu(null); // Reset selected submenu if necessary
+    if (submenuVisible) {
+      // Close submenu and reset submenu state
+      setSubmenuVisible(false);
+      setSelectedSubmenu(null);
+    } else if (thirdSubmenuVisible) {
+      // Close third submenu
+      setThirdSubmenuVisible(false);
+    } else {
+      // Close entire sidebar and reset states
+      setOpen(false);
+      setSelectedCategory(null);
+      setSelectedSubmenu(null);
+    }
   };
 
   const secondHandleBackButtonClick = () => {
     if (thirdSubmenuVisible) {
-      // ถ้า third submenu ยังแสดง ให้ซ่อน third submenu
+      // Close third submenu
       setThirdSubmenuVisible(false);
     } else if (submenuVisible) {
-      // ถ้าเฉพาะ submenu ที่แสดง ให้ซ่อน submenu และกลับไปที่เมนูหลัก
+      // Close submenu and reset submenu state
       setSubmenuVisible(false);
-      setSelectedSubmenu(null); // รีเซ็ต submenu ที่เลือก
+      setSelectedSubmenu(null);
     } else {
-      // ถ้าไม่มี submenu หรือ third submenu แสดง ให้ซ่อนเมนูด้านข้าง
+      // Close entire sidebar and reset states
       setOpen(false);
-      setSelectedCategory(null); // รีเซ็ตหมวดหมู่ที่เลือก
-      setSelectedSubmenu(null); // รีเซ็ต submenu ที่เลือก
+      setSelectedCategory(null);
+      setSelectedSubmenu(null);
     }
   };
 
   return (
-    <div>
+    <div className="bg-white">
       {/* <nav className="navbar flex justify-between items-center bg-gray-900 text-white px-4 py-2">
         <div className="navbar-left flex items-center">
           <div className="hamburger-menu cursor-pointer" onClick={toggleMenu}>
@@ -212,19 +233,24 @@ export default function Sidebar(props) {
       </nav> */}
 
       <div className={sidebarClass} onClick={(e) => e.stopPropagation()}>
+        {/* <div ref={menuRef}></div> */}
         {menus.map((value) => (
           <div
             key={value.key}
-            className="py-4 pl-4 pr-4 font-semibold flex items-center justify-between"
+            className="py-4 pl-4 pr-4 font-semibold flex flex-row items-center justify-between"
           >
             {value.key !== "Home" ? (
               <button
-                className="text-left font-bold"
+                className="text-left font-bold flex items-center justify-between"
                 onClick={() => handleCategoryClick(value.key)}
               >
                 {value.key}
                 {value.submenu && value.submenu.length > 0 && (
-                  <FontAwesomeIcon icon={faChevronRight} />
+                  <img
+                    className="items-center"
+                    src="../src/assets/right-arrow.svg"
+                    alt="Sort by"
+                  />
                 )}
               </button>
             ) : (
@@ -240,9 +266,10 @@ export default function Sidebar(props) {
             className="py-4 pl-4 pr-4 font-bold flex items-center"
             onClick={firstHandleBackButtonClick}
           >
-            <FontAwesomeIcon
-              icon={faChevronLeft}
-              className="mr-2 font-semibold"
+            <img
+              className="items-center"
+              src="../src/assets/left-arrow.svg"
+              alt="Sort by"
             />
             {selectedCategory}
           </button>
@@ -253,10 +280,17 @@ export default function Sidebar(props) {
                 <button
                   key={item.key}
                   className="py-4 pl-4 pr-4 font-semibold flex items-center justify-between"
-                  onClick={() => handleSubmenuClick(item.key)} // Pass item.key as the argument
+                  onClick={(e) => {
+                    handleSubmenuClick(item.key);
+                    e.stopPropagation(); // Prevent closing on submenu click
+                  }}
                 >
                   {item.key}
-                  <FontAwesomeIcon icon={faChevronRight} />
+                  <img
+                    className="items-center"
+                    src="../src/assets/right-arrow.svg"
+                    alt="Sort by"
+                  />
                 </button>
               ))
             )}
@@ -267,32 +301,33 @@ export default function Sidebar(props) {
         <div className={thirdSubmenuClass}>
           <div className="py-4 pl-4 pr-4 font-semibold flex">
             <button className="" onClick={secondHandleBackButtonClick}>
-              <FontAwesomeIcon icon={faChevronLeft} />
+              <img
+                className="items-center"
+                src="../src/assets/left-arrow.svg"
+                alt="Sort by"
+              />
               <div className="items-center">{selectedSubmenu}</div>
             </button>
           </div>
           {menus
             .filter((menu) => menu.key === selectedCategory)
-            .map((menu) =>
-              menu.submenu
-                .filter((sub) => sub.key === selectedSubmenu)[0] // Check if this filtering is correct
-                .submenu.map(
-                  (
-                    thirdMenu // Ensure correct mapping of thirdMenu items
-                  ) => {
-                    return (
-                      <div
-                        key={thirdMenu}
-                        className="py-4 pl-4 pr-4 font-semibold flex items-center justify-between"
-                        onClick={() => handleThirdSubmenuClick(thirdMenu)}
-                      >
-                        <button className="cursor-pointer text-left font-bold">
-                          {thirdMenu}
-                        </button>
-                      </div>
-                    );
-                  }
-                )
+            .map(
+              (menu) =>
+                menu.submenu.filter((sub) => sub.key === selectedSubmenu)[0]
+                  .submenu && // Check if submenu exists before accessing it
+                menu.submenu
+                  .filter((sub) => sub.key === selectedSubmenu)[0]
+                  .submenu.map((thirdMenu) => (
+                    <div
+                      key={thirdMenu}
+                      className="py-4 pl-4 pr-4 font-semibold flex items-center justify-between"
+                      onClick={() => handleThirdSubmenuClick(thirdMenu)}
+                    >
+                      <button className="cursor-pointer text-left font-bold">
+                        {thirdMenu}
+                      </button>
+                    </div>
+                  ))
             )}
         </div>
       )}

@@ -1,267 +1,73 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faChevronRight,
-  faChevronLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
-export default function DeskNav() {
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [submenuVisible, setSubmenuVisible] = useState(false);
-  const [selectedSubmenu, setSelectedSubmenu] = useState(null);
-  const [thirdSubmenuVisible, setThirdSubmenuVisible] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false); // Add isDesktop state
-  const [sideDeskVisible, setSideDeskVisible] = useState(true); // Set sidebar sheet visible by default on desktop
+const categories = [
+  {
+    key: "Tops",
+    submenu: [
+      "All items",
+      "T-shirts",
+      "Cardigans",
+      "Knitwear & Sweaters",
+      "Sweatshirts & Hoodies",
+      "Fleece",
+    ],
+  },
+  { key: "Bottoms", submenu: ["All items", "Jeans", "Shorts"] },
+  {
+    key: "Dress & Jumpsuits",
+    submenu: ["All items", "Long dress", "Short dress", "Mini dress"],
+  },
+  { key: "Accessories", submenu: ["All items", "Rings", "Necklaces"] },
+  { key: "Collections", submenu: ["All items", "Summer", "Winter"] },
+];
 
-  const sidebarRef = useRef(null);
-  const hamburgerRef = useRef(null);
+const DeskNav = () => {
+  const [expandedCategory, setExpandedCategory] = useState(null);
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  const [activated, setActivated] = useState(null);
 
-  const menus = [
-    { key: "Home" },
-    {
-      key: "Men",
-      submenu: [
-        {
-          key: "Tops",
-          submenu: [
-            "All items",
-            "T-shirts",
-            "Cardigans",
-            "Knitwear & Sweaters",
-          ],
-        },
-        { key: "Bottom", submenu: ["All items", "Jeans"] },
-        { key: "Accessories", submenu: ["All items", "Rings"] },
-      ],
-    },
-    {
-      key: "Women",
-      submenu: [
-        {
-          key: "Tops",
-          submenu: [
-            "All items",
-            "T-shirts",
-            "Cardigans",
-            "Knitwear & Sweaters",
-          ],
-        },
-        { key: "Bottom", submenu: ["All items", "Jeans"] },
-        { key: "Accessories", submenu: ["All items", "Rings"] },
-      ],
-    },
-    {
-      key: "Kids",
-      submenu: [
-        {
-          key: "Tops",
-          submenu: [
-            "All items",
-            "T-shirts",
-            "Cardigans",
-            "Knitwear & Sweaters",
-          ],
-        },
-        { key: "Bottom", submenu: ["All items", "Jeans"] },
-        { key: "Accessories", submenu: ["All items", "Rings"] },
-      ],
-    },
-    {
-      key: "Shoes",
-      submenu: [
-        {
-          key: "Tops",
-          submenu: [
-            "All items",
-            "T-shirts",
-            "Cardigans",
-            "Knitwear & Sweaters",
-          ],
-        },
-        { key: "Bottom", submenu: ["All items", "Jeans"] },
-        { key: "Accessories", submenu: ["All items", "Rings"] },
-      ],
-    },
-    {
-      key: "Accessories",
-      submenu: [
-        {
-          key: "Tops",
-          submenu: [
-            "All items",
-            "T-shirts",
-            "Cardigans",
-            "Knitwear & Sweaters",
-          ],
-        },
-        { key: "Bottom", submenu: ["All items", "Jeans"] },
-        { key: "Accessories", submenu: ["All items", "Rings"] },
-      ],
-    },
-  ];
-
-  const toggleMenu = () => setMenuVisible(!menuVisible);
-
-  const handleClickOutside = (event) => {
-    if (
-      sidebarRef.current &&
-      !sidebarRef.current.contains(event.target) && // Check if clicked outside sidebar
-      hamburgerRef.current &&
-      !hamburgerRef.current.contains(event.target) && // Check if clicked outside hamburger menu
-      !event.target.closest(".sidebar-sheet") // Check if clicked on space besides sidebar
-    ) {
-      setMenuVisible(false); // Close sidebar
-      setSelectedCategory(null);
-      setSubmenuVisible(false);
-      setSelectedSubmenu(null);
-      setThirdSubmenuVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    // Check window width on initial load
-    setIsDesktop(window.innerWidth >= 1024); // Set the threshold for desktop view
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
-  // Add event listener to track window resize for desktop view
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1024); // Set the threshold for desktop view
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  //   const sidebarClass = `sidebar-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
-  //     menuVisible ? "translate-x-0" : "-translate-x-full"
-  //   }`;
-
-  //   const submenuClass = `submenu-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
-  //     submenuVisible ? "translate-x-0" : "-translate-x-full"
-  //   }`;
-
-  //   const thirdSubmenuClass = `third-submenu-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
-  //     thirdSubmenuVisible ? "translate-x-0" : "-translate-x-full"
-  //   }`;
-
-  //   const sidebarDeskClass = `side-desk-sheet fixed top-0 left-0 h-full w-64 bg-white shadow-md transition-transform duration-300 transform ${
-  //     sideDeskVisible ? "translate-x-0" : "-translate-x-full"
-  //   }`;
-
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-    setSubmenuVisible(true);
-  };
-
-  const handleSubmenuClick = (subMenu) => {
-    setSelectedSubmenu(subMenu);
-    setThirdSubmenuVisible(true);
-  };
-
-  const handleThirdSubmenuClick = (thirdMenu) => {
-    setSelectedCategory(null); // Reset selected category if necessary
-    setSelectedSubmenu(thirdMenu); // Set selected submenu to the clicked thirdMenu item
-    setThirdSubmenuVisible(true); // Show the third submenu
-  };
-
-  const firstHandleBackButtonClick = () => {
-    setMenuVisible(true); // Make sure to set menuVisible to true
-    setSelectedCategory(null); // Reset selected category
-    setSubmenuVisible(false); // Hide submenu
-    setThirdSubmenuVisible(false); // Hide third submenu if necessary
-    setSelectedSubmenu(null); // Reset selected submenu if necessary
-  };
-
-  const secondHandleBackButtonClick = () => {
-    if (thirdSubmenuVisible) {
-      // ถ้า third submenu ยังแสดง ให้ซ่อน third submenu
-      setThirdSubmenuVisible(false);
-    } else if (submenuVisible) {
-      // ถ้าเฉพาะ submenu ที่แสดง ให้ซ่อน submenu และกลับไปที่เมนูหลัก
-      setSubmenuVisible(false);
-      setSelectedSubmenu(null); // รีเซ็ต submenu ที่เลือก
-    } else {
-      // ถ้าไม่มี submenu หรือ third submenu แสดง ให้ซ่อนเมนูด้านข้าง
-      setMenuVisible(false);
-      setSelectedCategory(null); // รีเซ็ตหมวดหมู่ที่เลือก
-      setSelectedSubmenu(null); // รีเซ็ต submenu ที่เลือก
-    }
+  const handleCategoryClick = (category, index) => {
+    setExpandedCategory(expandedCategory === category ? null : category);
+    setFocusedIndex(index); // Set focused index when category is clicked
   };
 
   return (
-    <div>
-      {submenuVisible && (
-        <div className={submenuClass}>
+    <div className="sidebar text-left flex flex-col font-bold bg-white">
+      {categories.map((category, index) => (
+        <div key={category.key}>
           <button
-            className="py-4 pl-4 pr-4 font-bold flex items-center"
-            onClick={firstHandleBackButtonClick}
+            className="category-button flex items-center justify-between px-4 py-4"
+            onClick={() => handleCategoryClick(category.key, index)}
           >
+            {category.key}
             <FontAwesomeIcon
-              icon={faChevronLeft}
-              className="mr-2 font-semibold"
+              icon={
+                expandedCategory === category.key ? faChevronUp : faChevronDown
+              }
             />
-            {selectedCategory}
           </button>
-          {menus
-            .filter((menu) => menu.key === selectedCategory)
-            .map((menu) =>
-              menu.submenu.map((item) => (
+          {expandedCategory === category.key && (
+            <div className="submenu font-semibold">
+              {category.submenu.map((item, subIndex) => (
                 <button
-                  key={item.key}
-                  className="py-4 pl-4 pr-4 font-semibold flex items-center justify-between"
-                  onClick={() => handleSubmenuClick(item.key)} // Pass item.key as the argument
+                  key={`${item}-${subIndex}`}
+                  className="submenu-item py-2 px-4 hover:bg-[#F2F2F2] font-semibold display: flex flex-grow: 1"
+                  onClick={() => {
+                    handleCategoryClick(category.key, subIndex);
+                    setActivated(item);
+                  }}
                 >
-                  {item.key}
-                  <FontAwesomeIcon icon={faChevronRight} />
+                  {item}
                 </button>
-              ))
-            )}
+              ))}
+            </div>
+          )}
         </div>
-      )}
-
-      {thirdSubmenuVisible && (
-        <div className={thirdSubmenuClass}>
-          <div className="py-4 pl-4 pr-4 font-semibold flex">
-            <button className="" onClick={secondHandleBackButtonClick}>
-              <FontAwesomeIcon icon={faChevronLeft} />
-              <div className="items-center">{selectedSubmenu}</div>
-            </button>
-          </div>
-          {menus
-            .filter((menu) => menu.key === selectedCategory)
-            .map((menu) =>
-              menu.submenu
-                .filter((sub) => sub.key === selectedSubmenu)[0] // Check if this filtering is correct
-                .submenu.map(
-                  (
-                    thirdMenu // Ensure correct mapping of thirdMenu items
-                  ) => {
-                    return (
-                      <div
-                        key={thirdMenu}
-                        className="py-4 pl-4 pr-4 font-semibold flex items-center justify-between"
-                        onClick={() => handleThirdSubmenuClick(thirdMenu)}
-                      >
-                        <button className="cursor-pointer text-left font-bold">
-                          {thirdMenu}
-                        </button>
-                      </div>
-                    );
-                  }
-                )
-            )}
-        </div>
-      )}
+      ))}
     </div>
   );
-}
+};
+
+export default DeskNav;
