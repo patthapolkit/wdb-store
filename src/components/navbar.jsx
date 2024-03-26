@@ -55,7 +55,7 @@ function Navbar() {
 
         <div className="justify-self-end	flex text-white pr-40">
           <a href="" className="py-5 px-3 hover:text-gray-400">
-            <img src="/public/shopping.svg"></img>
+            <img src="/shopping.svg"></img>
           </a>
         </div>
 
