@@ -26,16 +26,15 @@ const categories = [
 const DeskNav = () => {
   const [expandedCategory, setExpandedCategory] = useState(null);
   const [focusedIndex, setFocusedIndex] = useState(0);
+  const [activated, setActivated] = useState(null);
 
   const handleCategoryClick = (category, index) => {
     setExpandedCategory(expandedCategory === category ? null : category);
     setFocusedIndex(index); // Set focused index when category is clicked
   };
 
-  const [activated, setActivated] = useState(null);
-
   return (
-    <div className="sidebar font-bold">
+    <div className="sidebar text-left flex flex-col font-bold bg-white">
       {categories.map((category, index) => (
         <div key={category.key}>
           <button
@@ -50,7 +49,7 @@ const DeskNav = () => {
             />
           </button>
           {expandedCategory === category.key && (
-            <div className="submenu px-4 font-semibold">
+            <div className="submenu font-semibold">
               {category.submenu.map((item, subIndex) => (
                 <button
                   key={`${item}-${subIndex}`}
