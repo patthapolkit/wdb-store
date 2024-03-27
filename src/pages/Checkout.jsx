@@ -8,11 +8,7 @@ export default function Checkout() {
   const [items, setItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [cartId, setCartId] = useState("H8ypnablMoINttMKysN4");
-
-  useEffect(() => {
-    setCartId(localStorage.getItem("cartId"));
-  }, []);
+  const cartId = localStorage.getItem("cartId");
 
   useEffect(() => {
     const fetchData = async () => {
