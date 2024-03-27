@@ -9,12 +9,10 @@ export default function Checkout() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cartId, setCartId] = useState("H8ypnablMoINttMKysN4");
-  console.log("Test");
 
-  // useEffect(() => {
-  //   // localStorage.setItem("cartId", "JPObn5gYjlxi6pn9MHQAb");
-  //   setCartId(localStorage.getItem("cartId"));
-  // }, []);
+  useEffect(() => {
+    setCartId(localStorage.getItem("cartId"));
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
