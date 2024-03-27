@@ -7,7 +7,7 @@ import OutStockLabel from "../components/labels/OutStockLabel";
 import GreyStar from "../components/icons/GreyStar";
 import GreenStar from "../components/icons/GreenStar";
 import axios from "axios";
-import ProductCard from "../components/ProductCard";
+import ProductCardContainer from "../components/ProductCardContainer";
 
 export default function ProductDetails() {
   const { permalink } = useParams();
@@ -637,28 +637,10 @@ export default function ProductDetails() {
               )}
               {/*People also like these*/}
               <div className="mb-10 ">
-                <p className="font-bold text-32px mb-10 lg:mb-16">
+                <h2 className="font-bold text-[32px] my-10">
                   People also like these
-                </p>
-                <div className="flex flex-col gap-y-9 mb-8 lg:flex-row lg:gap-x-10">
-                  {Array(4)
-                    .fill(null)
-                    .map((_, index) => {
-                      const prod = getSameCategory(index);
-                      return (
-                        <ProductCard
-                          key={index}
-                          image={prod?.imageUrls[0]}
-                          name={prod?.name}
-                          price={prod?.price}
-                          promotionalPrice={prod?.promotionalPrice}
-                          description={prod?.description}
-                          rating={prod?.ratings}
-                          permalink={prod?.permalink}
-                        />
-                      );
-                    })}
-                </div>
+                </h2>
+                <ProductCardContainer />
               </div>
             </div>
             {/* Modal */}
@@ -683,7 +665,7 @@ export default function ProductDetails() {
                     <div className="flex flex-col justify-between items-center   h-[258px] lg:h-[160px] lg:flex-row gap-x-10">
                       <img
                         src={data.imageUrls[0]}
-                        alt="test"
+                        alt=""
                         className="w-40 h-40 lg:w-40 lg:h-40 bg-contain"
                       />
                       <div className="flex flex-col gap-y-1 justify-between h-[82px] lg:flex-row lg:p-y-[47px] w-full">
