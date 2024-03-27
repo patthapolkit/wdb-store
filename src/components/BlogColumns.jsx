@@ -33,9 +33,12 @@ export default function BlogColumns() {
                 collection invites you to indulge in the allure of winter
                 fashion.
               </p>
-              <button className="text-white bg-secondary-base py-[17px] px-2.5">
+              <a
+                className="text-white bg-secondary-base py-[17px] px-2.5 hover:bg-secondary-700"
+                href="/list"
+              >
                 View more
-              </button>
+              </a>
             </div>
           </div>
 
@@ -53,9 +56,12 @@ export default function BlogColumns() {
                 perfect fusion of style and comfort, our curated selection of
                 sneakers is a celebration of urban chic.
               </p>
-              <button className="text-white bg-secondary-base py-[17px] px-2.5">
+              <a
+                className="text-white bg-secondary-base py-[17px] px-2.5 hover:bg-secondary-700"
+                href="/list"
+              >
                 View more
-              </button>
+              </a>
             </div>
           </div>
         </div>
