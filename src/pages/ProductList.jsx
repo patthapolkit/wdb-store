@@ -121,6 +121,7 @@ export default function ProductList() {
                     promotionalPrice={product.promotionalPrice}
                     description={product.description}
                     rating={product.ratings}
+                    permalink={product.permalink}
                   />
                 ))}
             </div>
@@ -150,6 +151,7 @@ export default function ProductList() {
                   promotionalPrice={product.promotionalPrice}
                   description={product.description}
                   rating={product.ratings}
+                  permalink={product.permalink}
                 />
               ))}
           </div>

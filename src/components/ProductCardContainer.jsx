@@ -26,6 +26,7 @@ export default function ProductCardContainer() {
             price={product.price}
             rating={product.ratings}
             description={product.description}
+            permalink={product.permalink}
           />
         ))}
       </div>
