@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     element: <Checkout />,
   },
   {
-    path: "/details",
+    path: "/details/:permalink",
     element: <ProductDetails />,
   },
   {
