@@ -1,23 +1,40 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import DeskNav from "../components/DeskNav";
 import ProductCard from "../components/ProductCard";
-import Sortby from "../components/Sortby";
 
 export default function ProductList() {
-  const [menuVisible, setMenuVisible] = useState(false);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
-  const [openSidebar, setOpenSidebar] = useState(false);
+  const [header, setHeader] = useState("");
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const categories = searchParams.get("categories");
+  const collection = searchParams.get("collection");
+  const sort = searchParams.get("sort");
+
+  const formatText = (text) => {
+    if (text === null) return;
+    return text.replace(/-/g, " ").toUpperCase();
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://api.storefront.wdb.skooldio.dev/products"
+          "https://api.storefront.wdb.skooldio.dev/products",
+          {
+            params: {
+              sort: sort,
+              categories: categories,
+              collection: collection,
+            },
+          }
         );
         setData(response.data.data);
       } catch (error) {
@@ -26,6 +43,9 @@ export default function ProductList() {
     };
     setLoading(true);
     fetchData();
+    setHeader(
+      formatText(categories) || formatText(collection) || "All Products"
+    );
     setLoading(false);
   }, []);
 
@@ -77,11 +97,11 @@ export default function ProductList() {
   return (
     <>
       {!isMobile && (
-        <div className="flex flex-row px-[160px] py-24 justify-between gap-32">
+        <div className="flex flex-row px-[160px] py-24 justify-between gap-32 mb-44">
           <DeskNav />
           <div className="flex flex-col w-full">
             <div className="flex-row flex w-full justify-between">
-              <h1 className="text-3xl font-bold mb-16">Women's Clothing</h1>
+              <h1 className="text-3xl font-bold mb-16">{header}</h1>
               <button
                 className="items-center flex border w-fit h-fit border-primary-base px-2 py-2 focus:outline-none"
                 onClick={toggleBottomSheet}
@@ -109,33 +129,31 @@ export default function ProductList() {
       )}
 
       {isMobile && (
-        <>
-          <div className="flex flex-col items-center gap-5 mt-6 px-4">
-            <h1 className="font-bold text-[32px] ">Women's Clothing</h1>
-            <div className="flex flex-row justify-center items-center self-end">
-              <button onClick={toggleBottomSheet}>
-                <div className="flex flex-row justify-center items-center self-end">
-                  <p>Sort by</p>
-                  <img className="ml-2" src="/src/assets/sort.svg" alt="Sort" />
-                </div>
-              </button>
-            </div>
-            <div className="flex flex-col gap-10">
-              {data &&
-                data.map((product, index) => (
-                  <ProductCard
-                    key={index}
-                    image={product.imageUrls[0]}
-                    name={product.name}
-                    price={product.price}
-                    promotionalPrice={product.promotionalPrice}
-                    description={product.description}
-                    rating={product.ratings}
-                  />
-                ))}
-            </div>
+        <div className="flex flex-col items-center gap-5 mt-6 px-4 mb-9">
+          <h1 className="font-bold text-[32px] ">{header}</h1>
+          <div className="flex flex-row justify-center items-center self-end">
+            <button onClick={toggleBottomSheet}>
+              <div className="flex flex-row justify-center items-center self-end">
+                <p>Sort by</p>
+                <img className="ml-2" src="/src/assets/sort.svg" alt="Sort" />
+              </div>
+            </button>
           </div>
-        </>
+          <div className="flex flex-col gap-10">
+            {data &&
+              data.map((product, index) => (
+                <ProductCard
+                  key={index}
+                  image={product.imageUrls[0]}
+                  name={product.name}
+                  price={product.price}
+                  promotionalPrice={product.promotionalPrice}
+                  description={product.description}
+                  rating={product.ratings}
+                />
+              ))}
+          </div>
+        </div>
       )}
 
       {bottomSheetVisible && (
@@ -143,7 +161,7 @@ export default function ProductList() {
           className={`${
             isMobile
               ? "fixed bottom-0 left-0 w-full bg-white border-t rounded-t-2xl pt-8 pb-6 px-4"
-              : "text-left flex justify-start absolute top-56 right-40 border border-primary-base bg-white"
+              : "text-left flex justify-start absolute top-52 right-40 border border-primary-base bg-white"
           }`}
           onClick={handleClickOutside}
         >

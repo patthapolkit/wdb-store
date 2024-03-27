@@ -8,8 +8,12 @@ export default function Footer() {
               Featured Product
             </h3>
             <div className="px-6 lg:px-12 flex flex-col font-semibold gap-4">
-              <p>Men</p>
-              <p>Ladies</p>
+              <a href="/list?categories=all-men">
+                <p>Men</p>
+              </a>
+              <a href="/list?categories=all-ladies">
+                <p>Ladies</p>
+              </a>
             </div>
           </div>
           <div className="flex flex-col lg:w-1/2">

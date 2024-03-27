@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { menus } from "../constants/menus";
+import routes from "../constants/routes";
 
 export default function Sidebar({ extendedMenu, setExtendedMenu }) {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -84,12 +85,15 @@ export default function Sidebar({ extendedMenu, setExtendedMenu }) {
             .filter((menu) => menu.key === selectedCategory)
             .flatMap((menu) => menu.submenu)
             .map((menu) => (
-              <button
+              <a
                 key={selectedCategory + menu}
                 className="py-4 px-8 text-[18px] font-semibold flex items-center hover:bg-primary-base w-full justify-between"
+                href={`/list?${"categories"}=${
+                  routes[selectedCategory + menu]
+                }`}
               >
                 {menu}
-              </button>
+              </a>
             ))}
         </div>
       )}

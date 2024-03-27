@@ -14,7 +14,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="bg-secondary-base flex flex-row justify-between items-center w-full h-[60px] px-4 lg:px-[160px] text-white">
+      <nav className="bg-secondary-base flex flex-row justify-between items-center w-full h-[60px] px-4 lg:px-[160px] text-white sticky top-0 z-10">
         <div className="flex flex-row items-center justify-center gap-2 lg:gap-10">
           <Sidebar
             extendedMenu={extendedMenu}
@@ -42,8 +42,8 @@ export default function Navbar() {
             <p className="font-semibold text-lg">WDB</p>
           </a>
           <div className="hidden lg:flex">
-            <MenuItem text="Men" href="" />
-            <MenuItem text="Women" href="" />
+            <MenuItem text="Men" href="/list?categories=all-men" />
+            <MenuItem text="Women" href="/list?categories=all-ladies" />
           </div>
         </div>
         <a href="/checkout">
