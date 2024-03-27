@@ -37,7 +37,7 @@ export default function ProductDetails() {
             items: [
               {
                 skuCode: currentSku.skuCode,
-                quantity: selectedValue,
+                quantity: Number(selectedValue),
               },
             ],
           })
