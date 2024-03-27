@@ -29,6 +29,9 @@ export default {
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
       },
+      fontSize: {
+        "32px": "32px",
+      },
     },
   },
   plugins: [daisyui],
