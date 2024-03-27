@@ -11,8 +11,8 @@ import ProductCardContainer from "../components/ProductCardContainer";
 
 export default function ProductDetails() {
   const { permalink } = useParams();
-  // const permalink = "shirts-city-commuter-coat";
   const baseurl = "https://api.storefront.wdb.skooldio.dev/products/";
+
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [rating, setRating] = useState(0);
@@ -20,8 +20,6 @@ export default function ProductDetails() {
   const [sizeData, setSizeData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isOutStock, setIsOutStock] = useState(false);
-  const [allProduct, setAllProduct] = useState([]);
-  const [prodCategory, setProdCategory] = useState("");
   const [currentColor, setCurrentColor] = useState("");
   const [currentSize, setCurrentSize] = useState("");
   const [currentSku, setCurrentSku] = useState({});
@@ -58,31 +56,21 @@ export default function ProductDetails() {
   }, [currentColor, currentSize]);
 
   useEffect(() => {
-    const fetchAllProduct = async () => {
-      try {
-        const { data: response } = await axios.get(baseurl);
-        setAllProduct(response.data);
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
     const fetchData = async () => {
-      setLoading(true);
       try {
+        setLoading(true);
         const { data: response } = await axios.get(baseurl + permalink);
         setData(response);
         calculateStar(response?.ratings ?? 0);
         getColors(response?.variants ?? []);
         getSizes(response?.variants ?? []);
         checkIsOutStock(response?.variants ?? []);
-        setProdCategory(response?.categories?.[1]);
         setLoading(false);
       } catch (error) {
         console.error(error.message);
       }
     };
     fetchData();
-    fetchAllProduct();
   }, []);
 
   const getSku = () => {
@@ -137,7 +125,7 @@ export default function ProductDetails() {
     variants.forEach((data) => {
       if (!tempCollect.includes(data.size)) tempCollect.push(data.size);
     });
-    tempCollect.forEach((size) => {
+    tempCollect.forEach(() => {
       if (tempCollect.includes("XS") && !sizeOrders.includes("XS"))
         sizeOrders.push("XS");
       if (tempCollect.includes("S") && !sizeOrders.includes("S"))
@@ -184,17 +172,10 @@ export default function ProductDetails() {
     }
   };
 
-  const getSameCategory = (index) => {
-    const items = allProduct.filter(
-      (product) => product?.categories[1] === prodCategory
-    );
-    return items[index + 1];
-  };
-
   return (
     <>
       <div className="flex flex-col">
-        {/* Navbar */}
+        {/* Loading */}
         {loading ? (
           <div className="m-6 border shadow rounded-md mx-4 mt-10 lg:mx-40 lg:mt-10">
             {/* {Array(10)
@@ -371,7 +352,7 @@ export default function ProductDetails() {
                             <select
                               id="dropdown-selection"
                               name="dropdown-selection"
-                              className="h-[54px] rounded-md border border-secondary-300 text-secondary-500"
+                              className="h-[54px] border border-secondary-300 text-secondary-500"
                               disabled={true}
                             >
                               <option
@@ -524,7 +505,7 @@ export default function ProductDetails() {
                                     style={{
                                       backgroundColor: color.code,
                                       border: color.isClicked
-                                        ? `solid green`
+                                        ? `1px solid #C1CD00`
                                         : "none",
                                     }}
                                     onClick={() => {
@@ -572,7 +553,7 @@ export default function ProductDetails() {
                                   className="aspect-square w-full border border-secondary-300"
                                   style={{
                                     border: size.isClicked
-                                      ? `solid green`
+                                      ? `1px solid #C1CD00`
                                       : "none",
                                   }}
                                   onClick={() => {
@@ -604,7 +585,7 @@ export default function ProductDetails() {
                             <select
                               id="dropdown-selection"
                               name="dropdown-selection"
-                              className="h-[54px] rounded-md border border-secondary-300"
+                              className="h-[54px] border border-secondary-300"
                               value={selectedValue}
                               onChange={handleChange}
                             >
