@@ -14,7 +14,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="bg-secondary-base flex flex-row justify-between items-center w-full h-[60px] px-4 lg:px-[160px] text-white sticky top-0 z-10">
+      <nav className="bg-secondary-base flex flex-row justify-between items-center w-full h-[60px] px-4 lg:px-[160px] text-white sticky top-0 z-50">
         <div className="flex flex-row items-center justify-center gap-2 lg:gap-10">
           <Sidebar
             extendedMenu={extendedMenu}
