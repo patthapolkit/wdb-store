@@ -688,18 +688,22 @@ export default function ProductDetails() {
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-4  lg:flex-row lg:gap-x-1 w-full mt-6">
-                    <button
-                      onClick={() => navigate("/checkout")}
-                      className="flex-grow bg-secondary-base text-white font-normal text-base h-[54px] rounded-none"
-                    >
-                      View cart
-                    </button>
-                    <button
-                      onClick={() => navigate("/list")}
-                      className="flex-grow text-black border-black border-solid border-2   font-normal text-base h-[54px] rounded-none"
-                    >
-                      Continue Shopping
-                    </button>
+                    <a href="/checkout">
+                      <button
+                        // onClick={() => navigate("/checkout")}
+                        className="flex-grow bg-secondary-base text-white font-normal text-base h-[54px] rounded-none"
+                      >
+                        View cart
+                      </button>
+                    </a>
+                    <a href="/list">
+                      <button
+                        // onClick={() => navigate("/list")}
+                        className="flex-grow text-black border-black border-solid border-2   font-normal text-base h-[54px] rounded-none"
+                      >
+                        Continue Shopping
+                      </button>
+                    </a>
                   </div>
                 </div>
               </div>
