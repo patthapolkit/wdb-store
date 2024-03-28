@@ -22,51 +22,10 @@ export default function ProductDetails() {
   const [isOutStock, setIsOutStock] = useState(false);
   const [currentColor, setCurrentColor] = useState("");
   const [currentSize, setCurrentSize] = useState("");
-  const [currentSku, setCurrentSku] = useState({});
   const [selectedValue, setSelectedValue] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [isSubmit, setIsSubmit] = useState(false);
-  const [inCartProducts, setInCartProducts] = useState([]);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const updateCart = async () => {
-      try {
-        const res = await axios.post(
-          "https://api.storefront.wdb.skooldio.dev/carts",
-          {
-            items: inCartProducts,
-          }
-        );
-        localStorage.setItem("cartId", res.data.id);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    console.log(inCartProducts);
-    updateCart();
-  }, [inCartProducts]);
-
-  useEffect(() => {
-    if (isSubmit) {
-      const newAdding = {
-        skuCode: findSkuCode(currentColor, currentSize),
-        quantity: Number(selectedValue),
-      };
-      console.log(newAdding);
-      console.log(inCartProducts);
-      const updatedCart = [...inCartProducts, newAdding];
-      setInCartProducts(updatedCart);
-    }
-    return setIsSubmit(false);
-  }, [isSubmit]);
-
-  // useEffect(() => {
-  //   {
-  //     currentColor !== "" && currentSize !== "" && getSku(selectedValue);
-  //   }
-  // }, [currentColor, currentSize]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,15 +45,6 @@ export default function ProductDetails() {
     fetchData();
   }, []);
 
-  // const getSku = () => {
-  //   const filterSku = data.variants.filter(
-  //     (variant) =>
-  //       variant.color === currentColor && variant.size === currentSize
-  //   );
-  //   console.log(filterSku[0]);
-  //   setCurrentSku(filterSku?.[0]);
-  // };
-
   const findSkuCode = (color, size) => {
     if (size) {
       const variant = data?.variants?.find(
@@ -109,10 +59,34 @@ export default function ProductDetails() {
     }
   };
 
+  const addItem = async (skuCode, qty, permalink) => {
+    const data = {
+      items: [
+        {
+          skuCode,
+          quantity: Number(qty),
+          permalink,
+        },
+      ],
+    };
+
+    const cartId = localStorage.getItem("cartId");
+    const BASE_URL = "https://api.storefront.wdb.skooldio.dev/carts";
+    const ADD_URL = cartId !== null ? `/${cartId}/items` : "";
+
+    try {
+      const response = await axios.post(BASE_URL + ADD_URL, data);
+      if (cartId === null) {
+        localStorage.setItem("cartId", response.data.id);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSubmit = () => {
-    // set price
     setTotalPrice(data.promotionalPrice * selectedValue);
-    setIsSubmit(true);
+    addItem(findSkuCode(currentColor, currentSize), selectedValue, permalink);
   };
 
   const handleChange = (event) => {
