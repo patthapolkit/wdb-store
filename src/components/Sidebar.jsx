@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { menus } from "../constants/menus";
 import routes from "../constants/routes";
+import rightArrow from "../assets/right-arrow.svg";
+import leftArrow from "../assets/left-arrow.svg";
 
 export default function Sidebar({ extendedMenu, setExtendedMenu }) {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -59,7 +61,7 @@ export default function Sidebar({ extendedMenu, setExtendedMenu }) {
               >
                 {value.key}
                 {value.submenu && value.submenu.length > 0 && (
-                  <img src="/src/assets/right-arrow.svg" alt="" />
+                  <img src={rightArrow} alt="" />
                 )}
               </button>
             ) : (
@@ -74,11 +76,7 @@ export default function Sidebar({ extendedMenu, setExtendedMenu }) {
             className="p-4 text-2xl border-b-[1px] px-8  font-bold w-full flex gap-6 items-center"
             onClick={handleBack}
           >
-            <img
-              className="items-center"
-              src="/src/assets/left-arrow.svg"
-              alt="Back"
-            />
+            <img className="items-center" src={leftArrow} alt="Back" />
             {selectedCategory}
           </button>
           {menus

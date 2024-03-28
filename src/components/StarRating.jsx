@@ -1,3 +1,6 @@
+import fillStar from "../assets/filled-star.svg";
+import emptyStar from "../assets/empty-star.svg";
+
 export default function StarRating({ value }) {
   return (
     <div className="flex flex-row gap-1">
@@ -7,7 +10,7 @@ export default function StarRating({ value }) {
         if (starSerialNumber <= Math.round(value)) {
           return (
             <div key={starSerialNumber} className="flex">
-              <img src="/src/assets/filled-star.svg" alt="" />
+              <img src={fillStar} alt="" />
             </div>
           );
         }
@@ -15,7 +18,7 @@ export default function StarRating({ value }) {
         if (starSerialNumber > Math.round(value)) {
           return (
             <div key={starSerialNumber} className="flex">
-              <img src="/src/assets/empty-star.svg" alt="" />
+              <img src={emptyStar} alt="" />
             </div>
           );
         }
