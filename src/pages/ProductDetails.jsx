@@ -26,30 +26,41 @@ export default function ProductDetails() {
   const [selectedValue, setSelectedValue] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [inCartProducts, setInCartProducts] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    {
-      isSubmit &&
-        axios
-          .post("https://api.storefront.wdb.skooldio.dev/carts", {
-            items: [
-              {
-                skuCode: currentSku.skuCode,
-                quantity: Number(selectedValue),
-              },
-            ],
-          })
-          .then((res) => {
-            localStorage.setItem("cartId", res.data.id);
-          });
+    const updateCart = async () => {
+      try {
+        const res = await axios.post(
+          "https://api.storefront.wdb.skooldio.dev/carts",
+          inCartProducts
+        );
+        localStorage.setItem("cartId", res.data.id);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    console.log(inCartProducts);
+    updateCart();
+  }, [inCartProducts]);
+
+  useEffect(() => {
+    if (isSubmit) {
+      const newAdding = {
+        skuCode: currentSku.skuCode,
+        quantity: Number(selectedValue),
+      };
+      console.log(newAdding);
+      console.log(inCartProducts);
+      const updatedCart = [...inCartProducts, newAdding];
+      setInCartProducts(updatedCart);
     }
     return setIsSubmit(false);
   }, [isSubmit]);
 
   useEffect(() => {
-    // console.log(currentColor, currentSize);
     {
       currentColor !== "" && currentSize !== "" && getSku(selectedValue);
     }
@@ -57,7 +68,6 @@ export default function ProductDetails() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(permalink);
       try {
         setLoading(true);
         const { data: response } = await axios.get(baseurl + permalink);
@@ -84,11 +94,9 @@ export default function ProductDetails() {
   };
 
   const handleSubmit = () => {
-    console.log(selectedValue);
     // set price
     setTotalPrice(data.promotionalPrice * selectedValue);
     setIsSubmit(true);
-    // console.log(totalPrice);
   };
 
   const handleChange = (event) => {
