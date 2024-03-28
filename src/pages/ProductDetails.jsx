@@ -57,6 +57,7 @@ export default function ProductDetails() {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(permalink);
       try {
         setLoading(true);
         const { data: response } = await axios.get(baseurl + permalink);
@@ -122,9 +123,11 @@ export default function ProductDetails() {
     const tempCollect = [];
     const sizeOrders = [];
     const sizeButton = [];
+    // console.log(variants);
     variants.forEach((data) => {
       if (!tempCollect.includes(data.size)) tempCollect.push(data.size);
     });
+    // console.log("tempCollect", tempCollect);
     tempCollect.forEach(() => {
       if (tempCollect.includes("XS") && !sizeOrders.includes("XS"))
         sizeOrders.push("XS");
@@ -136,6 +139,28 @@ export default function ProductDetails() {
         sizeOrders.push("L");
       if (tempCollect.includes("XL") && !sizeOrders.includes("XL"))
         sizeOrders.push("XL");
+      if (tempCollect.includes("35") && !sizeOrders.includes("35"))
+        sizeOrders.push("35");
+      if (tempCollect.includes("36") && !sizeOrders.includes("36"))
+        sizeOrders.push("36");
+      if (tempCollect.includes("37") && !sizeOrders.includes("37"))
+        sizeOrders.push("37");
+      if (tempCollect.includes("38") && !sizeOrders.includes("38"))
+        sizeOrders.push("38");
+      if (tempCollect.includes("39") && !sizeOrders.includes("39"))
+        sizeOrders.push("39");
+      if (tempCollect.includes("40") && !sizeOrders.includes("40"))
+        sizeOrders.push("40");
+      if (tempCollect.includes("41") && !sizeOrders.includes("41"))
+        sizeOrders.push("41");
+      if (tempCollect.includes("42") && !sizeOrders.includes("42"))
+        sizeOrders.push("42");
+      if (tempCollect.includes("43") && !sizeOrders.includes("43"))
+        sizeOrders.push("43");
+      if (tempCollect.includes("44") && !sizeOrders.includes("44"))
+        sizeOrders.push("44");
+      if (tempCollect.includes("45") && !sizeOrders.includes("45"))
+        sizeOrders.push("45");
     });
     sizeOrders;
     sizeOrders.forEach((size) => {
@@ -329,7 +354,7 @@ export default function ProductDetails() {
                                 What's my size?
                               </a>
                             </div>
-                            <div className="flex gap-x-2 justify-between h-[54px]">
+                            <div className="flex flex-wrap gap-x-2 justify-between h-[54px]">
                               {sizeData.map((size, index) => (
                                 <button
                                   key={index}
