@@ -57,9 +57,11 @@ export default function Summary({ items, products, findIndex }) {
       <button className="btn rounded-none bg-secondary-base text-white font-normal text-base px-[10px] h-[54px] w-full mb-4">
         Check out
       </button>
-      <button className="btn rounded-none bg-white border font-normal text-base px-[10px] h-[54px] w-full">
-        Continue shopping
-      </button>
+      <a href="/list" className="w-full">
+        <button className="btn rounded-none bg-white border font-normal text-base px-[10px] h-[54px] w-full">
+          Continue shopping
+        </button>
+      </a>
     </div>
   );
 }

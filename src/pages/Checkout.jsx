@@ -2,17 +2,13 @@ import { useEffect, useState } from "react";
 import ItemCard from "../components/ItemCard";
 import Summary from "../components/Summary";
 import axios from "axios";
+import ProductCardContainer from "../components/ProductCardContainer";
 
 export default function Checkout() {
   const [items, setItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [cartId, setCartId] = useState("H8ypnablMoINttMKysN4");
-
-  // useEffect(() => {
-  //   // localStorage.setItem("cartId", "JPObn5gYjlxi6pn9MHQAb");
-  //   setCartId(localStorage.getItem("cartId"));
-  // }, []);
+  const cartId = localStorage.getItem("cartId");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,8 +72,8 @@ export default function Checkout() {
   };
 
   return (
-    <div className="mx-4 lg:mx-40">
-      <h1 className="font-bold text-32px my-8 lg:my-10">My cart</h1>
+    <div className="mx-4 lg:mx-40 mb-10 ">
+      <h1 className="font-bold text-[32px] my-8 lg:my-10">My cart</h1>
       {loading ? (
         <div className="flex justify-center items-center">
           <span className="loading loading-spinner loading-md"></span>
@@ -92,10 +88,8 @@ export default function Checkout() {
                   key={item.id}
                   item={item}
                   product={products[findIndex(item)]}
-                  //setItems={setItems}
                   deleteItem={deleteItem}
                   updateItem={updateItem}
-                  // items={item}
                 />
               ))
             ) : (
@@ -110,9 +104,11 @@ export default function Checkout() {
                   Looks like you have not added anything to your cart. Go ahead
                   & explore top categories.
                 </p>
-                <button className="btn rounded-none bg-secondary-base text-white font-normal text-base px-[10px] h-[54px]">
-                  Continue shopping
-                </button>
+                <a href="/list">
+                  <button className="btn rounded-none bg-secondary-base text-white font-normal text-base px-[10px] h-[54px]">
+                    Continue shopping
+                  </button>
+                </a>
               </div>
             )}
           </div>
@@ -125,7 +121,12 @@ export default function Checkout() {
         </div>
       )}
       {items.length <= 0 && (
-        <h1 className="font-bold text-32px my-10">People also like these</h1>
+        <>
+          <h1 className="font-bold text-[32px] my-10">
+            People also like these
+          </h1>
+          <ProductCardContainer />
+        </>
       )}
     </div>
   );

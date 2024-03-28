@@ -30,7 +30,7 @@ export default {
         sans: ["Poppins", "sans-serif"],
       },
       fontSize: {
-        "32px": "2rem",
+        "32px": "32px",
       },
     },
   },
