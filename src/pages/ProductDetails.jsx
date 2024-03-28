@@ -35,7 +35,9 @@ export default function ProductDetails() {
       try {
         const res = await axios.post(
           "https://api.storefront.wdb.skooldio.dev/carts",
-          inCartProducts
+          {
+            items: inCartProducts,
+          }
         );
         localStorage.setItem("cartId", res.data.id);
       } catch (error) {
@@ -49,7 +51,7 @@ export default function ProductDetails() {
   useEffect(() => {
     if (isSubmit) {
       const newAdding = {
-        skuCode: currentSku.skuCode,
+        skuCode: findSkuCode(currentColor, currentSize),
         quantity: Number(selectedValue),
       };
       console.log(newAdding);
@@ -60,11 +62,11 @@ export default function ProductDetails() {
     return setIsSubmit(false);
   }, [isSubmit]);
 
-  useEffect(() => {
-    {
-      currentColor !== "" && currentSize !== "" && getSku(selectedValue);
-    }
-  }, [currentColor, currentSize]);
+  // useEffect(() => {
+  //   {
+  //     currentColor !== "" && currentSize !== "" && getSku(selectedValue);
+  //   }
+  // }, [currentColor, currentSize]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,13 +86,27 @@ export default function ProductDetails() {
     fetchData();
   }, []);
 
-  const getSku = () => {
-    const filterSku = data.variants.filter(
-      (variant) =>
-        variant.color === currentColor && variant.size === currentSize
-    );
-    console.log(filterSku[0]);
-    setCurrentSku(filterSku?.[0]);
+  // const getSku = () => {
+  //   const filterSku = data.variants.filter(
+  //     (variant) =>
+  //       variant.color === currentColor && variant.size === currentSize
+  //   );
+  //   console.log(filterSku[0]);
+  //   setCurrentSku(filterSku?.[0]);
+  // };
+
+  const findSkuCode = (color, size) => {
+    if (size) {
+      const variant = data?.variants?.find(
+        (variant) => variant.color === color && variant.size === size
+      );
+      return variant?.skuCode;
+    } else {
+      const variant = data?.variants?.find(
+        (variant) => variant.color === color
+      );
+      return variant?.skuCode;
+    }
   };
 
   const handleSubmit = () => {
