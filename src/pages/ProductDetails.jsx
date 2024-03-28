@@ -650,17 +650,17 @@ export default function ProductDetails() {
                         className="w-40 h-40 lg:w-40 lg:h-40 bg-contain"
                       />
                       <div className="flex flex-col gap-y-1 justify-between h-[82px] lg:flex-row lg:p-y-[47px] w-full">
-                        <div className="flex flex-col h-[54px] lg:h-[66px]">
+                        <div className="flex flex-col lg:h-[66px]">
                           <h3 className="text-[20px] font-semibold lg:text-2xl lg:font-bold">
                             {data.name}
                           </h3>
-                          <div className="h-full relative">
-                            <p className="absolute left-0 bottom-0 text-sm">
-                              QTY: {selectedValue}{" "}
-                            </p>
-                          </div>
+                          {/* <div className="h-full relative"> */}
+                          <p className="left-0 bottom-0 text-sm">
+                            QTY: {selectedValue}{" "}
+                          </p>
+                          {/* </div> */}
                         </div>
-                        <p className="pl-[226px] items-end right-0 lg:right-0 lg:top-0 font-semibold lg:font-bold lg:text-2xl">
+                        <p className="self-end right-0 lg:right-0 lg:top-0 font-semibold lg:font-bold lg:text-2xl">
                           THB {totalPrice}
                         </p>
                       </div>
