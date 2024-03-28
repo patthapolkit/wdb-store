@@ -90,6 +90,11 @@ export default function ProductList() {
     toggleBottomSheet();
   };
 
+  const handleReset = () => {
+    setSelectedOption(""); // Reset the selected option to clear radio buttons
+    setData([...data].sort((a, b) => a.id - b.id)); // Reset data to original order (assuming `id` is unique)
+  };
+
   const toggleBottomSheet = () => {
     setBottomSheetVisible(!bottomSheetVisible);
   };
@@ -177,7 +182,10 @@ export default function ProductList() {
                   Cancel
                 </button>
                 <h3 className="sort-by font-semibold">Sort by</h3>
-                <button className="reset-button text-info font-normal">
+                <button
+                  className="reset-button text-info font-normal"
+                  onClick={handleReset}
+                >
                   Reset
                 </button>
               </div>

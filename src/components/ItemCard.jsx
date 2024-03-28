@@ -36,10 +36,17 @@ export default function ItemCard(props) {
   };
 
   const findSkuCode = (color, size) => {
-    const variant = product?.variants?.find(
-      (variant) => variant.color === color && variant.size === size
-    );
-    return variant?.skuCode;
+    if (size) {
+      const variant = data?.variants?.find(
+        (variant) => variant.color === color && variant.size === size
+      );
+      return variant?.skuCode;
+    } else {
+      const variant = data?.variants?.find(
+        (variant) => variant.color === color
+      );
+      return variant?.skuCode;
+    }
   };
 
   const sizeRemain = (size) => {

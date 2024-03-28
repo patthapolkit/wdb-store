@@ -22,38 +22,10 @@ export default function ProductDetails() {
   const [isOutStock, setIsOutStock] = useState(false);
   const [currentColor, setCurrentColor] = useState("");
   const [currentSize, setCurrentSize] = useState("");
-  const [currentSku, setCurrentSku] = useState({});
   const [selectedValue, setSelectedValue] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [isSubmit, setIsSubmit] = useState(false);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    {
-      isSubmit &&
-        axios
-          .post("https://api.storefront.wdb.skooldio.dev/carts", {
-            items: [
-              {
-                skuCode: currentSku.skuCode,
-                quantity: Number(selectedValue),
-              },
-            ],
-          })
-          .then((res) => {
-            localStorage.setItem("cartId", res.data.id);
-          });
-    }
-    return setIsSubmit(false);
-  }, [isSubmit]);
-
-  useEffect(() => {
-    // console.log(currentColor, currentSize);
-    {
-      currentColor !== "" && currentSize !== "" && getSku(selectedValue);
-    }
-  }, [currentColor, currentSize]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,21 +45,46 @@ export default function ProductDetails() {
     fetchData();
   }, []);
 
-  const getSku = () => {
-    const filterSku = data.variants.filter(
-      (variant) =>
-        variant.color === currentColor && variant.size === currentSize
-    );
-    console.log(filterSku[0]);
-    setCurrentSku(filterSku?.[0]);
+  const findSkuCode = (color, size) => {
+    if (size) {
+      const variant = data?.variants?.find(
+        (variant) => variant.color === color && variant.size === size
+      );
+      return variant?.skuCode;
+    } else {
+      const variant = data?.variants?.find(
+        (variant) => variant.color === color
+      );
+      return variant?.skuCode;
+    }
+  };
+
+  const addItem = async (skuCode, qty, permalink) => {
+    const data = {
+      items: [
+        {
+          skuCode,
+          quantity: Number(qty),
+          permalink,
+        },
+      ],
+    };
+
+    const cartId = localStorage.getItem("cartId");
+    const BASE_URL = "https://api.storefront.wdb.skooldio.dev/carts";
+    const ADD_URL = cartId !== null ? `/${cartId}/items` : "";
+
+    try {
+      const response = await axios.post(BASE_URL + ADD_URL, data);
+      localStorage.setItem("cartId", response.data.id);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSubmit = () => {
-    console.log(selectedValue);
-    // set price
     setTotalPrice(data.promotionalPrice * selectedValue);
-    setIsSubmit(true);
-    // console.log(totalPrice);
+    addItem(findSkuCode(currentColor, currentSize), selectedValue, permalink);
   };
 
   const handleChange = (event) => {
@@ -122,9 +119,11 @@ export default function ProductDetails() {
     const tempCollect = [];
     const sizeOrders = [];
     const sizeButton = [];
+    // console.log(variants);
     variants.forEach((data) => {
       if (!tempCollect.includes(data.size)) tempCollect.push(data.size);
     });
+    // console.log("tempCollect", tempCollect);
     tempCollect.forEach(() => {
       if (tempCollect.includes("XS") && !sizeOrders.includes("XS"))
         sizeOrders.push("XS");
@@ -136,6 +135,28 @@ export default function ProductDetails() {
         sizeOrders.push("L");
       if (tempCollect.includes("XL") && !sizeOrders.includes("XL"))
         sizeOrders.push("XL");
+      if (tempCollect.includes("35") && !sizeOrders.includes("35"))
+        sizeOrders.push("35");
+      if (tempCollect.includes("36") && !sizeOrders.includes("36"))
+        sizeOrders.push("36");
+      if (tempCollect.includes("37") && !sizeOrders.includes("37"))
+        sizeOrders.push("37");
+      if (tempCollect.includes("38") && !sizeOrders.includes("38"))
+        sizeOrders.push("38");
+      if (tempCollect.includes("39") && !sizeOrders.includes("39"))
+        sizeOrders.push("39");
+      if (tempCollect.includes("40") && !sizeOrders.includes("40"))
+        sizeOrders.push("40");
+      if (tempCollect.includes("41") && !sizeOrders.includes("41"))
+        sizeOrders.push("41");
+      if (tempCollect.includes("42") && !sizeOrders.includes("42"))
+        sizeOrders.push("42");
+      if (tempCollect.includes("43") && !sizeOrders.includes("43"))
+        sizeOrders.push("43");
+      if (tempCollect.includes("44") && !sizeOrders.includes("44"))
+        sizeOrders.push("44");
+      if (tempCollect.includes("45") && !sizeOrders.includes("45"))
+        sizeOrders.push("45");
     });
     sizeOrders;
     sizeOrders.forEach((size) => {
@@ -203,7 +224,7 @@ export default function ProductDetails() {
                 <>
                   <div className="flex flex-col mb-20 lg:mb-[134px] lg:flex-row lg:gap-x-10">
                     {/*Image review*/}
-                    <div className="flex flex-col gap-y-4 mb-5  lg:w-[780px] lg:gap-y-[31px]">
+                    <div className="flex flex-col gap-y-4 mb-5 h-[500px] lg:w-[780px] lg:gap-y-[31px]">
                       <div className="relative w-full h-full">
                         <div className="flex w-full h-full">
                           {data.imageUrls.map((image, index) => (
@@ -329,7 +350,7 @@ export default function ProductDetails() {
                                 What's my size?
                               </a>
                             </div>
-                            <div className="flex gap-x-2 justify-between h-[54px]">
+                            <div className="flex flex-wrap gap-x-2 justify-between h-[54px]">
                               {sizeData.map((size, index) => (
                                 <button
                                   key={index}
@@ -378,10 +399,10 @@ export default function ProductDetails() {
               )}
               {!isOutStock && (
                 <>
-                  <div className="flex flex-col mb-[134px] lg:flex-row lg:gap-x-10">
+                  <div className="flex flex-col mb-20 lg:flex-row lg:gap-x-10">
                     {/*Image review*/}
-                    <div className="flex flex-col gap-y-4 mb-5 lg:w-[780px] lg:gap-y-[31px]">
-                      <div className="relative w-full h-full">
+                    <div className="flex flex-col gap-y-4 mb-5 h-full lg:h-[1008px] lg:w-[780px] lg:gap-y-[31px]">
+                      <div className="relative w-full  h-[343px] lg:h-[780px]">
                         <div className="flex w-full h-full">
                           {data.imageUrls.map((image, index) => (
                             <div
@@ -628,8 +649,8 @@ export default function ProductDetails() {
             <dialog id="my_modal" className="modal">
               <div className="modal-box w-[343px] max-h-[518px] h-[518px] mx-4 my-36 p-6 lg:w-[900px] max-w-full lg:p-[9px] lg:max-h-[374px]">
                 <div className="flex-col m-0 lg:m-4 gap-y-6">
-                  <div className="flex lg:flex-row justify-between">
-                    <h3 className="font-semibold lg:font-bold lg:text-2xl text-lg text-center">
+                  <div className="flex justify-between">
+                    <h3 className="self-center font-semibold lg:font-bold lg:text-2xl text-lg text-center">
                       Items added to your cart
                     </h3>
                     <form method="dialog">
@@ -650,17 +671,17 @@ export default function ProductDetails() {
                         className="w-40 h-40 lg:w-40 lg:h-40 bg-contain"
                       />
                       <div className="flex flex-col gap-y-1 justify-between h-[82px] lg:flex-row lg:p-y-[47px] w-full">
-                        <div className="flex flex-col h-[54px] lg:h-[66px]">
+                        <div className="flex flex-col lg:h-[66px]">
                           <h3 className="text-[20px] font-semibold lg:text-2xl lg:font-bold">
                             {data.name}
                           </h3>
-                          <div className="h-full relative">
-                            <p className="absolute left-0 bottom-0 text-sm">
-                              QTY: {selectedValue}{" "}
-                            </p>
-                          </div>
+                          {/* <div className="h-full relative"> */}
+                          <p className="left-0 bottom-0 text-sm">
+                            QTY: {selectedValue}{" "}
+                          </p>
+                          {/* </div> */}
                         </div>
-                        <p className="pl-[226px] items-end right-0 lg:right-0 lg:top-0 font-semibold lg:font-bold lg:text-2xl">
+                        <p className="self-end right-0 lg:right-0 lg:top-0 font-semibold lg:font-bold lg:text-2xl">
                           THB {totalPrice}
                         </p>
                       </div>
