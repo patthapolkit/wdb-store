@@ -76,9 +76,7 @@ export default function ProductDetails() {
 
     try {
       const response = await axios.post(BASE_URL + ADD_URL, data);
-      if (cartId === null) {
-        localStorage.setItem("cartId", response.data.id);
-      }
+      localStorage.setItem("cartId", response.data.id);
     } catch (error) {
       console.error(error);
     }
