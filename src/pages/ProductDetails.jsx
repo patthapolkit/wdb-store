@@ -378,9 +378,9 @@ export default function ProductDetails() {
               )}
               {!isOutStock && (
                 <>
-                  <div className="flex flex-col mb-[134px] lg:flex-row lg:gap-x-10">
+                  <div className="flex flex-col mb-20 lg:flex-row lg:gap-x-10">
                     {/*Image review*/}
-                    <div className="flex flex-col gap-y-4 mb-5 h-[500px] lg:h-[1008px] lg:w-[780px] lg:gap-y-[31px]">
+                    <div className="flex flex-col gap-y-4 mb-5 h-full lg:h-[1008px] lg:w-[780px] lg:gap-y-[31px]">
                       <div className="relative w-full  h-[343px] lg:h-[780px]">
                         <div className="flex w-full h-full">
                           {data.imageUrls.map((image, index) => (
@@ -628,8 +628,8 @@ export default function ProductDetails() {
             <dialog id="my_modal" className="modal">
               <div className="modal-box w-[343px] max-h-[518px] h-[518px] mx-4 my-36 p-6 lg:w-[900px] max-w-full lg:p-[9px] lg:max-h-[374px]">
                 <div className="flex-col m-0 lg:m-4 gap-y-6">
-                  <div className="flex lg:flex-row justify-between">
-                    <h3 className="font-semibold lg:font-bold lg:text-2xl text-lg text-center">
+                  <div className="flex justify-between">
+                    <h3 className="self-center font-semibold lg:font-bold lg:text-2xl text-lg text-center">
                       Items added to your cart
                     </h3>
                     <form method="dialog">
