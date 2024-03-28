@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Sidebar from "./Sidebar";
 
 function MenuItem({ text, href }) {
@@ -11,6 +12,19 @@ function MenuItem({ text, href }) {
 
 export default function Navbar() {
   const [extendedMenu, setExtendedMenu] = useState(false);
+  const [isCartEmpty, setIsCartEmpty] = useState(0);
+  const cartId = localStorage.getItem("cartId");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      axios
+        .get(`https://api.storefront.wdb.skooldio.dev/carts/${cartId}`)
+        .then((res) => {
+          setIsCartEmpty(res.data.items.length === 0 ? 0 : 1);
+        });
+    };
+    fetchData();
+  }, [cartId]);
 
   return (
     <>
@@ -47,7 +61,10 @@ export default function Navbar() {
           </div>
         </div>
         <a href="/checkout">
-          <img src="/src/assets/shopping-0.svg" alt="shopping cart"></img>
+          <img
+            src={`/src/assets/shopping-${isCartEmpty}.svg`}
+            alt="shopping cart"
+          ></img>
         </a>
       </nav>
     </>
