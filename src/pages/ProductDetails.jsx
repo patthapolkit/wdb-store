@@ -203,7 +203,7 @@ export default function ProductDetails() {
                 <>
                   <div className="flex flex-col mb-20 lg:mb-[134px] lg:flex-row lg:gap-x-10">
                     {/*Image review*/}
-                    <div className="flex flex-col gap-y-4 mb-5  lg:w-[780px] lg:gap-y-[31px]">
+                    <div className="flex flex-col gap-y-4 mb-5 h-[500px] lg:w-[780px] lg:gap-y-[31px]">
                       <div className="relative w-full h-full">
                         <div className="flex w-full h-full">
                           {data.imageUrls.map((image, index) => (
@@ -380,7 +380,7 @@ export default function ProductDetails() {
                 <>
                   <div className="flex flex-col mb-[134px] lg:flex-row lg:gap-x-10">
                     {/*Image review*/}
-                    <div className="flex flex-col gap-y-4 mb-5 lg:w-[780px] lg:gap-y-[31px]">
+                    <div className="flex flex-col gap-y-4 mb-5 h-[500px] lg:w-[780px] lg:gap-y-[31px]">
                       <div className="relative w-full h-full">
                         <div className="flex w-full h-full">
                           {data.imageUrls.map((image, index) => (
