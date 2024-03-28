@@ -1,3 +1,6 @@
+import del from "../assets/delete.svg";
+import chevronDown from "../assets/chevron-down.svg";
+
 export default function ItemCard(props) {
   const { id, skuCode, quantity } = props.item;
   const product = props.product;
@@ -68,11 +71,7 @@ export default function ItemCard(props) {
               deleteItem(id);
             }}
           >
-            <img
-              src="/src/assets/delete.svg"
-              alt="delete this item"
-              className="w-10 h-10"
-            />
+            <img src={del} alt="delete this item" className="w-10 h-10" />
           </button>
         </div>
         <div className="flex justify-between flex-col lg:flex-row">
@@ -105,7 +104,7 @@ export default function ItemCard(props) {
                   )}
                 </select>
                 <div className="absolute top-2 right-2 pointer-events-none">
-                  <img src="src/assets/chevron-down.svg" alt="" />
+                  <img src={chevronDown} alt="" />
                 </div>
               </div>
             </div>
@@ -145,7 +144,7 @@ export default function ItemCard(props) {
                   )}
                 </select>
                 <div className="absolute top-2 right-2 pointer-events-none">
-                  <img src="src/assets/chevron-down.svg" alt="" />
+                  <img src={chevronDown} alt="" />
                 </div>
               </div>
             </div>
@@ -179,7 +178,7 @@ export default function ItemCard(props) {
                   )}
                 </select>
                 <div className="absolute top-2 right-2 pointer-events-none">
-                  <img src="src/assets/chevron-down.svg" alt="" />
+                  <img src={chevronDown} alt="" />
                 </div>
               </div>
             </div>

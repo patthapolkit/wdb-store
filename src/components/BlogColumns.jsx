@@ -1,3 +1,6 @@
+import blog1 from "../assets/home/blog-1.jpg";
+import blog2 from "../assets/home/blog-2.jpg";
+
 export default function BlogColumns() {
   return (
     <>
@@ -19,11 +22,7 @@ export default function BlogColumns() {
             </p>
           </div>
           <div className="relative h-[500px] w-full lg:w-[575px]">
-            <img
-              src="/src/assets/home/blog-1.jpg"
-              alt=""
-              className="w-full h-full object-cover"
-            />
+            <img src={blog1} alt="" className="w-full h-full object-cover" />
             <div className="absolute top-0 left-0 p-4 h-full flex flex-col items-center text-center justify-end gap-4 bg-gradient-to-t from-black/80 from-50% to-transparent to-75% lg:from-0% lg:to-100%">
               <p className="text-2xl font-bold text-white">Cozy Breeze</p>
               <p className="text-base leading-5 text-white">
@@ -43,11 +42,7 @@ export default function BlogColumns() {
           </div>
 
           <div className="h-[500px] relative w-full lg:w-[575px]">
-            <img
-              src="/src/assets/home/blog-2.jpg"
-              alt=""
-              className="w-full h-full object-cover"
-            />
+            <img src={blog2} alt="" className="w-full h-full object-cover" />
             <div className="absolute top-0 left-0 p-4 h-full flex flex-col items-center text-center justify-end gap-4 bg-gradient-to-t from-black/80 from-50% to-transparent to-75% lg:from-0% lg:to-100%">
               <p className="text-2xl font-bold text-white">Flexi Move</p>
               <p className="text-base leading-5 text-white">

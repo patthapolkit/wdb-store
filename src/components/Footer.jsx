@@ -1,3 +1,5 @@
+import storefront from "../assets/storefront.png";
+
 export default function Footer() {
   return (
     <>
@@ -31,7 +33,7 @@ export default function Footer() {
           <p>Copyright © 2024 All rights reserved for all contents.</p>
           <div className="flex items-center justify-center">
             <p className="mr-2">Powered By</p>
-            <img src="/src/assets/storefront.png" alt="Sponsor" />
+            <img src={storefront} alt="Sponsor" />
           </div>
         </div>
       </footer>

@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Sidebar from "./Sidebar";
+import logo from "../assets/logo.svg";
+import burger from "../assets/burger-menu.svg";
+import shopping0 from "../assets/shopping-0.svg";
+import shopping1 from "../assets/shopping-1.svg";
 
 function MenuItem({ text, href }) {
   return (
@@ -42,17 +46,13 @@ export default function Navbar() {
             }}
             className="lg:hidden"
           >
-            <img src="/src/assets/burger-menu.svg" alt="menu" />
+            <img src={burger} alt="menu" />
           </button>
           <a
             href="/"
             className="flex gap-2.5 flex-row items-center justify-center"
           >
-            <img
-              className="w-9 h-9"
-              src="/src/assets/logo.svg"
-              alt="WDB Store"
-            />
+            <img className="w-9 h-9" src={logo} alt="WDB Store" />
             <p className="font-semibold text-lg">WDB</p>
           </a>
           <div className="hidden lg:flex">
@@ -61,10 +61,11 @@ export default function Navbar() {
           </div>
         </div>
         <a href="/checkout">
-          <img
-            src={`/src/assets/shopping-${isCartEmpty}.svg`}
-            alt="shopping cart"
-          ></img>
+          {isCartEmpty === 0 ? (
+            <img src={shopping0} alt="shopping cart" />
+          ) : (
+            <img src={shopping1} alt="shopping cart" />
+          )}
         </a>
       </nav>
     </>

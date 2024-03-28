@@ -3,6 +3,7 @@ import ItemCard from "../components/ItemCard";
 import Summary from "../components/Summary";
 import axios from "axios";
 import ProductCardContainer from "../components/ProductCardContainer";
+import emptyCart from "../assets/empty-cart.svg";
 
 export default function Checkout() {
   const [items, setItems] = useState([]);
@@ -95,8 +96,8 @@ export default function Checkout() {
             ) : (
               <div className="flex flex-col items-center">
                 <img
-                  src="/src/assets/empty-cart.svg"
-                  alt="empty-cart"
+                  src={emptyCart}
+                  alt="Empty cart"
                   className="mb-6 lg:w-[403px]"
                 />
                 <p className="font-bold text-32px mb-2">Your cart is empty</p>
